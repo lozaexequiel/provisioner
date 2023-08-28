@@ -10,7 +10,7 @@ vault_provision ()
 {
 cat <<EOF > /etc/vault.d/vault.hcl
     storage "raft" {
-    path    = "/opt/vault/data"
+    path    = "${VAULT_RAFT_PATH}"
     node_id = "raft_node_1"
     }
 
