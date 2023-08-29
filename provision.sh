@@ -5,6 +5,7 @@ variables ()
 {
 . /vagrant_data/.env/.env
 }
+
 disable_swap () 
 {
 sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
@@ -23,9 +24,6 @@ eval "$(ssh-agent -s)"
 
 install_dependencies ()
 {
-# add hashicorp repository
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 apt-get update
 apt-get install -y ${PACKAGES}
 apt-get upgrade -y
