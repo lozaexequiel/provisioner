@@ -5,12 +5,20 @@ variables ()
 {
 . /vagrant_data/.env/.env
 }
-sudo systemctl stop vault
+
 vault_provision ()
 {
+#Add hashicorp repo
+sudo apt-get update
+sudo apt-get install -y gnupg2 curl software-properties-common
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+#Install vault
+sudo apt-get update && sudo apt-get install -y vault
+sudo systemctl stop vault
 cat <<EOF > /etc/vault.d/vault.hcl
     storage "raft" {
-    path    = "${VAULT_RAFT_PATH}"
+    path    = "/opt/vault/data"
     node_id = "raft_node_1"
     }
 
