@@ -8,11 +8,12 @@ variables ()
 
 vault_provision ()
 {
-#Add hashicorp repo
 sudo apt-get update
 sudo apt-get install -y gnupg2 curl software-properties-common
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install -y vault
+sudo systemctl stop vault
 cat <<EOF > /etc/vault.d/vault.hcl
     storage "raft" {
     path    = "/opt/vault/data"
@@ -28,11 +29,9 @@ cat <<EOF > /etc/vault.d/vault.hcl
     cluster_addr = "https://127.0.0.1:8201"
     ui = true
 EOF
-sudo apt-get update && sudo apt-get install -y vault
-sudo systemctl stop vault
 sudo systemctl enable vault
 sudo systemctl start vault
-
+sudo systemctl status vault
 }
 configure_vault ()
 {
@@ -45,7 +44,8 @@ configure_vault ()
 }
 
 start_vault ()
-{
+{   sleep 1
+    echo "Unsealing Vault with the Vault address ${VAULT_ADDR}"
     vault operator unseal ${VAULT_UNSEAL_KEY}    
     vault login ${VAULT_TOKEN}
     vault auth enable ${APPROLE_AUTH_PATH}    
