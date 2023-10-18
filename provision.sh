@@ -3,6 +3,9 @@
 #set -x
 variables ()
 {
+if [ ! -f /vagrant_data/.env/.env ]; then
+cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
+fi
 . /vagrant_data/.env/.env
 }
 
@@ -29,17 +32,6 @@ apt-get install -y ${PACKAGES}
 apt-get upgrade -y
 }
 
-install_awscli ()
-{
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-mkdir -p ${HOME}/.aws
-cp -u ${AWS_CONFIG_FILE} ${HOME}/.aws/
-cp -u ${AWS_SHARED_CREDENTIALS_FILE} ${HOME}/.aws/
-./aws/install
-rm -rf awscliv2.zip aws
-}
-
 clean_up ()
 {
 apt-get autoremove -y
@@ -50,5 +42,4 @@ variables
 disable_swap
 create_ssh_key
 install_dependencies
-install_awscli
 clean_up

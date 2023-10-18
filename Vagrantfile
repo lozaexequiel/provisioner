@@ -1,11 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 BOX="ubuntu/lunar64"
-SCRIPT_REPOSITORY = "https://github.com/lozaexequiel/provisioner.git"
-provisioner = "provisioner"
+SCRIPT_REPOSITORY = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/provision.sh"
 VAGRANT_PATH = "/vagrant_data"
-ENV_PATH = "/vagrant_data/.env"
-PROVISION_SCRIPT = "Vault/provision.sh"
 PROVIDER       = "virtualbox"
 # Define master resources
 MASTER_MEMORY   = "4096"
@@ -38,10 +35,7 @@ Vagrant.configure("2") do |config|
 	    box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ..."
 	    box.vm.provision "shell", path: "scripts/provision.sh"
 	  if box.vm.hostname =~ /master/ then
-	    box.vm.provision "shell", inline: "sudo rm -rf #{VAGRANT_PATH}/provisioner"
-	    box.vm.provision "shell", inline: "curl -sSLf https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Vault/provision.sh | sudo sh"
-	    #box.vm.provision "shell", inline: "sudo chmod +x #{VAGRANT_PATH}/provisioner/#{PROVISION_SCRIPT}"
-	    #box.vm.provision "shell", path: "provisioner/#{PROVISION_SCRIPT}"	    
+	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"
 	    box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
 	end
 	  
