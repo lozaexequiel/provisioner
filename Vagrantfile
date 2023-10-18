@@ -32,8 +32,6 @@ Vagrant.configure("2") do |config|
 	      vb.cpus = opts[:cpus]
 	      vb.memory = opts[:memory]
 	    end
-	    box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ..."
-	    box.vm.provision "shell", path: "scripts/provision.sh"
 	  if box.vm.hostname =~ /master/ then
 	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"
 	    box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"

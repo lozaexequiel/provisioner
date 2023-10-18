@@ -27,15 +27,15 @@ eval "$(ssh-agent -s)"
 
 install_dependencies ()
 {
-apt-get update
-apt-get install -y ${PACKAGES}
-apt-get upgrade -y
+apt update
+apt install -y ${PACKAGES}
+apt upgrade -y
 }
 
 clean_up ()
 {
-apt-get autoremove -y
-apt-get clean
+apt autoremove -y
+apt clean
 }
 
 variables

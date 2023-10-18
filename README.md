@@ -1,7 +1,6 @@
 # Provisioner
 
-This directory contains the configuration files for the provisioner. The provisioner is responsible for creating the infrastructure and installing the software on the infrastructure. The provisioner can use the following tools:
-[Vagrant](https://www.vagrantup.com/), [Ansible](https://www.ansible.com/), [Docker](https://www.docker.com/), [Terraform](https://www.terraform.io/), [Packer](https://www.packer.io/), [AWS CLI](https://aws.amazon.com/cli/). [Jenkins](https://www.jenkins.io/), [Vault](https://www.vaultproject.io/).
+This directory contains the configuration files for provision tools.
 
 ## Prerequisites
 
@@ -37,6 +36,7 @@ mkdir .env && cd .env && mkdir .aws && touch .env && touch .aws/config && touch 
 Each vagrantfile will download the provisioning scripts from this repository. The provisioning scripts will install the selected software on the virtual machine. The provisioning scripts are written in [bash](https://www.gnu.org/software/bash/).
 
 ## Tools in for this project
+
 - [Vagrant](./Vagrant/README.md)
 - [Ansible](./Ansible/README.md)
 - [Docker](./Docker/README.md)
@@ -45,6 +45,20 @@ Each vagrantfile will download the provisioning scripts from this repository. Th
 - [AWS CLI](./AWS_CLI/README.md)
 - [Jenkins](./Jenkins/README.md)
 - [Vault](./Vault/README.md)
+
+## Access the shared folder
+
+To access the shared folder, run the following command:
+
+```cd /vagrant_data```
+
+## Installing the tools
+
+To install the tools in the virtual machine you can run the following command:
+
+```sudo sh /vagrant_data/<TOOL>/provision.sh```
+
+Please read the README.md of each tool to know how to configure it.
 
 ## Errors
 

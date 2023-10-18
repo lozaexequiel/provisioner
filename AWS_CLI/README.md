@@ -35,7 +35,9 @@ aws_access_key_id = $AWS_ACCESS_KEY_ID
 aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
 ```
 
-Both files are loaded in the .env/.aws directory.
+To automatic configuration both files must be loaded in the .env/.aws directory before executing the provision script.
+
+## Vagrant usage
 
 ## AWS CLI documentation
 
