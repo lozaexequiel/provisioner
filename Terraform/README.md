@@ -26,7 +26,6 @@ The terraform files structure is as follows:
 
 ~~~
 
-
 ## Terraform documentation
 
 The terraform full documentation can be found in [Terraform website](https://www.terraform.io/docs/index.html)

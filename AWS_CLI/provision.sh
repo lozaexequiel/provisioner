@@ -1,5 +1,4 @@
 #!/bin/bash
-# remove comment if you want to enable debugging
 #set -x
 variables ()
 {

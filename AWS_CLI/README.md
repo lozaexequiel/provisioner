@@ -37,8 +37,6 @@ aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
 
 To automatic configuration both files must be loaded in the .env/.aws directory before executing the provision script.
 
-## Vagrant usage
-
 ## AWS CLI documentation
 
 The AWS CLI full documentation can be found in [AWS CLI website](https://aws.amazon.com/cli/)
