@@ -6,9 +6,8 @@ variables ()
 }
 install_mqtt ()
 {
-docker pull ${DOCKER_IMAGE}
-docker network create ${DOCKER_NETWORK}
-docker run -d --name ${APPLICATION_NAME} --restart unless-stopped -p ${APPLICATION_HOST}:${APPLICATION_PORT} --network ${DOCKER_NETWORK} -v ${APP_HOST_VOLUME}:${APP_VOLUME} ${DOCKER_IMAGE}
+docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
+docker compose up -d --env-file ${ENV_FILE}
 }
 variables
 install_mqtt

@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+
+  mosquitto:
+
+    image: ${DOCKER_IMAGE}:${DOCKER_TAG}
+
+    container_name: mosquitto
+
+    restart: always
+
+    ports:
+
+      - 1883:1883
+      - 9001:9001
+
+    volumes:
+
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.confg
+      - mosquitto_logs:/mosquitto/log
+      - mosquitto_data:/mosquitto/data
+
+volumes:
+
+  mosquitto_logs:
+
+    name: mosquitto_logs
+    external: true
+
+  mosquitto_data:
+    name: mosquitto_data
+    external: true
+  
+  mosquitto_conf:
+    name: mosquitto_conf
+    external: true
