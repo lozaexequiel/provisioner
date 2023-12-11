@@ -1,12 +1,11 @@
 #!/bin/bash
-# remove comment if you want to enable debugging
 #set -x
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then
 cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
 fi
-ls -la /vagrant_data/
+ls -la /vagrant_data/.env/
 . /vagrant_data/.env/.env
 }
 
@@ -28,15 +27,15 @@ eval "$(ssh-agent -s)"
 
 install_dependencies ()
 {
-sudo apt update
-sudo apt install -y ${PACKAGES}
-sudo apt upgrade -y
+apt update
+apt install -y ${PACKAGES}
+apt upgrade -y
 }
 
 clean_up ()
 {
-sudo apt autoremove -y
-sudo apt clean
+apt autoremove -y
+apt clean
 }
 
 variables
