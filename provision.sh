@@ -4,38 +4,38 @@
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then
-cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
+sudo cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
 fi
 . /vagrant_data/.env/.env
 }
 
 disable_swap () 
 {
-sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo swapoff -a
 }
 
 create_ssh_key ()
 {
 [[ ! -f ${HOME}/.ssh/mykey ]]
-mkdir -p ${HOME}/.ssh
-ssh-keygen -f ${HOME}/.ssh/mykey -N ''
-chown -R ${USER}:${USER} ${HOME}/.ssh
-ssh-add ${HOME}/.ssh/mykey
-eval "$(ssh-agent -s)"
+sudo mkdir -p ${HOME}/.ssh
+no | sudo ssh-keygen -f ${HOME}/.ssh/mykey -N ""
+sudo chown -R ${USER}:${USER} ${HOME}/.ssh
+sudo ssh-add ${HOME}/.ssh/mykey
+sudo eval "$(ssh-agent -s)"
 }
 
 install_dependencies ()
 {
-apt update
-apt install -y ${PACKAGES}
-apt upgrade -y
+sudo apt update
+sudo apt install -y ${PACKAGES}
+sudo apt upgrade -y
 }
 
 clean_up ()
 {
-apt autoremove -y
-apt clean
+sudo apt autoremove -y
+sudo apt clean
 }
 
 variables
