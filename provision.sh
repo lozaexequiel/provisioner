@@ -4,25 +4,26 @@
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then
-sudo cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
+cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
 fi
+ls -la /vagrant_data/
 . /vagrant_data/.env/.env
 }
 
 disable_swap () 
 {
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-sudo swapoff -a
+sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+swapoff -a
 }
 
 create_ssh_key ()
 {
 [[ ! -f ${HOME}/.ssh/mykey ]]
-sudo mkdir -p ${HOME}/.ssh
-no | sudo ssh-keygen -f ${HOME}/.ssh/mykey -N ""
-sudo chown -R ${USER}:${USER} ${HOME}/.ssh
-sudo ssh-add ${HOME}/.ssh/mykey
-sudo eval "$(ssh-agent -s)"
+mkdir -p ${HOME}/.ssh
+ssh-keygen -f ${HOME}/.ssh/mykey -N ""
+chown -R ${USER}:${USER} ${HOME}/.ssh
+ssh-add ${HOME}/.ssh/mykey
+eval "$(ssh-agent -s)"
 }
 
 install_dependencies ()

@@ -13,6 +13,16 @@ docker-compose up -d
 #docker compose up -d --env-file ${ENV_FILE}
 }
 
+variables
+test_quorum_deployment
+
+
+
+
+
+
+
+#install_blockchain uncomment this to install blockchain quorum on VM
 install_blockchain()
 {
 #!/bin/bash
@@ -45,9 +55,4 @@ sudo chgrp -R ${USER} quorum
 sudo chown -R ${USER} quorum
 
 echo 'Quorum source ready'
-
-
-#install_quorum
-variables
-test_quorum_deployment
-#install_blockchain
+}
