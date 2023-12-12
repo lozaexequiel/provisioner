@@ -8,7 +8,7 @@ test_quorum_deployment ()
 {
 #docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
 git clone https://github.com/Consensys/quorum-examples.git
-cd examples/7nodes
+cd quorum-examples/examples/7nodes
 docker-compose up -d
 #docker compose up -d --env-file ${ENV_FILE}
 }

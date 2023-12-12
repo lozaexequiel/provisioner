@@ -17,7 +17,9 @@ swapoff -a
 
 create_ssh_key ()
 {
-[[ ! -f ${HOME}/.ssh/mykey ]]
+if [[ ! -f ${HOME}/.ssh/mykey ]]; then
+ssh-keygen -t rsa -b 4096 -C "${USER}@${HOSTNAME}" -f ${HOME}/.ssh/mykey -q -N ""
+fi
 mkdir -p ${HOME}/.ssh
 ssh-keygen -f ${HOME}/.ssh/mykey -N ""
 chown -R ${USER}:${USER} ${HOME}/.ssh
