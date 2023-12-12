@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+BOX="ubuntu/focal64"
+SCRIPT_REPOSITORY = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/provision.sh"
+DOCKER = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Docker/provision.sh"
+NODEJS= "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/NodeJS/provision.sh"
+BLOCKCHAIN = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Blockchain/provision.sh"
+VAGRANT_PATH = "/vagrant_data"
+PROVIDER       = "virtualbox"
+# Define master resources
+MASTER_MEMORY   = "8192"
+MASTER_CPU_COUNT = "4"
+MASTER_IP       = "192.168.0.30"
+# Define node resources
+#NODE_01_IP       = "192.168.0.34"
+#NODE_MEMORY   = "8192"
+#NODE_CPU_COUNT = "4"
+Vagrant.configure("2") do |config|
+	config.vm.box = BOX
+	boxes = [
+	  { :name => "master-01", :ip => MASTER_IP, :cpus => MASTER_CPU_COUNT, :memory => MASTER_MEMORY },
+	  #{ :name => "node-01", :ip => NODE_01_IP, :cpus => NODE_CPU_COUNT, :memory => NODE_MEMORY },
+	]
+	boxes.each do |opts|
+	  config.vm.define opts[:name] do |box|
+	    box.vm.synced_folder ".", VAGRANT_PATH
+	    box.vm.hostname = opts[:name]
+	    box.vm.network :public_network, ip: opts[:ip]
+	    box.vm.provider PROVIDER do |vb|
+	      vb.cpus = opts[:cpus]
+	      vb.memory = opts[:memory]
+	    end
+	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"
+	    box.vm.provision "shell", inline: "curl -sSLf #{DOCKER} | sudo sh"
+	    box.vm.provision "shell", inline: "curl -sSLf #{NODEJS} | sudo sh"
+  if box.vm.hostname =~ /master/ then
+		box.vm.provision "shell", inline: "curl -sSLf #{BLOCKCHAIN} | sudo sh"
+		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
+	end	
+  if box.vm.hostname =~ /node/ then
+		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"		
+	end
+end
+end
+end
