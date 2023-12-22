@@ -5,6 +5,7 @@ SCRIPT_REPOSITORY = "https://raw.githubusercontent.com/lozaexequiel/provisioner/
 DOCKER = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Docker/provision.sh"
 NODEJS= "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/NodeJS/provision.sh"
 BLOCKCHAIN = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Blockchain/provision.sh"
+NEW_RELIC = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/NewRelic/provision.sh"
 VAGRANT_PATH = "/vagrant_data"
 PROVIDER       = "virtualbox"
 # Define master resources
@@ -35,6 +36,7 @@ Vagrant.configure("2") do |config|
 	    box.vm.provision "shell", inline: "curl -sSLf #{NODEJS} | sudo sh"
   if box.vm.hostname =~ /master/ then
 		box.vm.provision "shell", inline: "curl -sSLf #{BLOCKCHAIN} | sudo sh"
+		box.vm.provision "shell", inline: "curl -sSLf #{NEW_RELIC} | sudo sh"
 		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
 	end	
   if box.vm.hostname =~ /node/ then
