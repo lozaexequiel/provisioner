@@ -14,7 +14,8 @@ if [ -d "${COMPOSE_PATH}" ]; then
         rm -rf quorum-examples
 fi
 git clone ${REPO_URL} ${COMPOSE_PATH}
-docker-compose -f ${COMPOSE_PATH} up -d
+cd ${COMPOSE_PATH}
+docker-compose up -d
 }
 
 variables
