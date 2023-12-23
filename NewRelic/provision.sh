@@ -7,6 +7,7 @@ echo "#                                               #"
 echo "#             NEW RELIC PROVISIONER             #"
 echo "#                                               #"
 echo "#################################################"
+echo " "
 }
 variables ()
 {

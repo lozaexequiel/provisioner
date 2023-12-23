@@ -7,6 +7,7 @@ echo "#                                               #"
 echo "#                   PROVISIONER                 #"
 echo "#                                               #"
 echo "#################################################"
+echo ""
 }
 variables ()
 {

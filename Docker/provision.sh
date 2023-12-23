@@ -8,6 +8,8 @@ echo "#                                               #"
 echo "#              DOCKER PROVISIONER               #"
 echo "#                                               #"
 echo "#################################################"
+echo ""
+}
 variables ()
 {
 USER="vagrant"
