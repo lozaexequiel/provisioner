@@ -8,10 +8,9 @@ echo "#                                               #"
 echo "#              DOCKER PROVISIONER               #"
 echo "#                                               #"
 echo "#################################################"
-}
 variables ()
 {
-. /vagrant_data/.env/.env
+USER="vagrant"
 }
 
 docker_provision ()
