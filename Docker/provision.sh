@@ -1,5 +1,6 @@
 #!/bin/bash
 #set -x
+
 header ()
 {
 echo "#################################################"
@@ -9,6 +10,7 @@ echo "#                                               #"
 echo "#################################################"
 echo ""
 }
+
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then
@@ -17,6 +19,7 @@ fi
 ls -la /vagrant_data/.env/
 . /vagrant_data/.env/.env
 }
+
 docker_provision ()
 {
 apt update
@@ -32,6 +35,7 @@ systemctl enable docker
 systemctl restart docker
 systemctl status docker | grep Active
 }
+
 header
 variables
 docker_provision
