@@ -4,10 +4,10 @@ header ()
 {
 echo "#################################################"
 echo "#                                               #"
-echo "#              DOCKER PROVISIONER               #"
+echo "#               DOCKER PROVISIONER              #"
 echo "#                                               #"
 echo "#################################################"
-echo " "
+echo ""
 }
 variables ()
 {

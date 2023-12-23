@@ -4,9 +4,10 @@ header ()
 {
 echo "#################################################"
 echo "#                                               #"
-echo "#              NODEJS PROVISIONER               #"
+echo "#                NODEJS PROVISIONER             #"
 echo "#                                               #"
 echo "#################################################"
+echo ""
 }
 variables ()
 {
