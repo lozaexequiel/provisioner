@@ -13,9 +13,6 @@ MASTER_IP       = "192.168.0.30"
 NODE_MEMORY   = "4096"
 NODE_CPU_COUNT = "2"
 NODE_01_IP       = "192.168.0.34"
-#NODE_02_IP      = "172.1.8.45"
-#NODE_02_IP      = "172.1.8.46"
-#NODE_03_IP      = "172.1.8.47"
 # Define Vagrant configuration
 Vagrant.configure("2") do |config|
 	config.vm.box = BOX
