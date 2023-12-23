@@ -1,5 +1,4 @@
 #!/bin/bash
-# remove comment if you want to enable debugging
 #set -x
 header ()
 {
@@ -8,16 +7,18 @@ echo "#                                               #"
 echo "#              DOCKER PROVISIONER               #"
 echo "#                                               #"
 echo "#################################################"
-echo ""
+echo " "
 }
 variables ()
 {
-USER="vagrant"
+if [ ! -f /vagrant_data/.env/.env ]; then
+cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
+fi
+ls -la /vagrant_data/.env/
+. /vagrant_data/.env/.env
 }
-
 docker_provision ()
 {
-# Add Docker's official GPG key:
 apt update
 apt install ca-certificates curl gnupg -y
 sudo install -m 0755 -d /etc/apt/keyrings
