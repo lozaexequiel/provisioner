@@ -1,5 +1,13 @@
 #!/bin/bash
 #set -x
+header ()
+{
+echo "#################################################"
+echo "#                                               #"
+echo "#            BLOCKCHAIN PROVISIONER             #"
+echo "#                                               #"
+echo "#################################################"
+}
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then
@@ -17,6 +25,6 @@ git clone ${REPO_URL} ${COMPOSE_PATH}
 cd ${COMPOSE_PATH}
 docker-compose up -d
 }
-
+header
 variables
 test_quorum_deployment

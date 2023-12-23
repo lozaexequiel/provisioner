@@ -1,6 +1,14 @@
 #!/bin/bash
 # remove comment if you want to enable debugging
 #set -x
+header ()
+{
+echo "#################################################"
+echo "#                                               #"
+echo "#              DOCKER PROVISIONER               #"
+echo "#                                               #"
+echo "#################################################"
+}
 variables ()
 {
 . /vagrant_data/.env/.env
@@ -23,6 +31,6 @@ apt install -y docker-compose
 systemctl restart docker
 systemctl status docker | grep Active
 }
-
+header
 variables
 docker_provision

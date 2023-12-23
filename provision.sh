@@ -1,5 +1,13 @@
 #!/bin/bash
 #set -x
+header ()
+{
+echo "#################################################"
+echo "#                                               #"
+echo "#                   PROVISIONER                 #"
+echo "#                                               #"
+echo "#################################################"
+}
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then
@@ -39,7 +47,7 @@ clean_up ()
 apt autoremove -y
 apt clean
 }
-
+header
 variables
 disable_swap
 create_ssh_key
