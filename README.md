@@ -60,6 +60,12 @@ To install the tools in the virtual machine you can run the following command:
 
 Please read the README.md of each tool to know how to configure it.
 
+**If you want to use the scripts from the local folder, comment the remote scripts and uncomment the local scripts. Check if the local scripts are in the same folder as the Vagrantfile.**
+
+## Warning
+
+The tools are installed in the virtual machine, not in the host machine.
+
 ## Errors
 
 Common issues can be found in the error [folder](./errors/README.md).
