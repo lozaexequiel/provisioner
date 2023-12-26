@@ -26,14 +26,14 @@ swapoff -a
 
 create_ssh_key ()
 {
-if [[ ! -f ${HOME}/.ssh/mykey ]]; then
-ssh-keygen -t rsa -b 4096 -C "${USER}@${HOSTNAME}" -f ${HOME}/.ssh/mykey -q -N ""
-fi
+if [ ! -f ${HOME}/.ssh/mykey ]; then
 mkdir -p ${HOME}/.ssh
-ssh-keygen -f ${HOME}/.ssh/mykey -N ""
+ssh-keygen -t rsa -b 4096 -C "${USER}@${HOSTNAME}" -f ${HOME}/.ssh/mykey -q -N ""
 chown -R ${USER}:${USER} ${HOME}/.ssh
 ssh-add ${HOME}/.ssh/mykey
 eval "$(ssh-agent -s)"
+fi
+
 }
 
 install_dependencies ()

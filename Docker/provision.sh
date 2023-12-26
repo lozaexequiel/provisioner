@@ -1,5 +1,6 @@
 #!/bin/bash
 #set -x
+
 header ()
 {
 echo "#################################################"
@@ -12,10 +13,10 @@ echo ""
 
 variables ()
 {
-if [ ! -f /vagrant_data/.env/.env ]; then
+if [ ! -f /vagrant_data/.env/.env ];then
     cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
 fi
-ls -la /vagrant_data/.env/
+ls -lah /vagrant_data/.env/
 . /vagrant_data/.env/.env
 }
 
@@ -23,7 +24,7 @@ docker_provision ()
 {
 apt update
 apt install ca-certificates curl gnupg -y
-sudo install -m 0755 -d /etc/apt/keyrings
+install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 chmod a+r /etc/apt/keyrings/docker.gpg
 echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
@@ -34,7 +35,6 @@ systemctl enable docker
 systemctl restart docker
 systemctl status docker | grep Active
 }
-
 header
 variables
 docker_provision
