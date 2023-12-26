@@ -8,7 +8,7 @@ PROVIDER       = "virtualbox"
 # Define master resources
 MASTER_MEMORY   = "4096"
 MASTER_CPU_COUNT = "2"
-MASTER_IP       = "192.168.0.30"
+MASTER_IP       = "192.168.0.130"
 # Define node resources
 NODE_MEMORY   = "4096"
 NODE_CPU_COUNT = "2"
@@ -30,8 +30,7 @@ Vagrant.configure("2") do |config|
 	      vb.memory = opts[:memory]
 	    end
 	  if box.vm.hostname =~ /master/ then
-	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"
-	    box.vm.provision "shell", inline: "curl -sSLf #{DOCKER} | sudo sh"
+	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"	
 	    box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
 	end
 	  

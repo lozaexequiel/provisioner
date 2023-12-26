@@ -32,37 +32,39 @@ Vagrant.configure("2") do |config|
 	      vb.memory = opts[:memory]
 	    end
 
-###############################################
-#######**REMOTE PROVISION SCRIPTS**############
-###############################################
 
-	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh" #Provisioner script
-	    box.vm.provision "shell", inline: "curl -sSLf #{NODEJS} | sudo sh" #NodeJS script
-	    box.vm.provision "shell", inline: "curl -sSLf #{DOCKER} | sudo sh" #Docker script
-	    if box.vm.hostname =~ /master/ then
-		box.vm.provision "shell", inline: "curl -sSLf #{BLOCKCHAIN} | sudo sh" #Blockchain script
-		box.vm.provision "shell", inline: "curl -sSLf #{NEW_RELIC} | sudo sh" #NewRelic script
-		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
-	end
-  if box.vm.hostname =~ /node/ then
-		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
-	end
 
 ###############################################
 #########**LOCAL PROVISION SCRIPTS**###########
 ###############################################
 
-	#    box.vm.provision "shell", path: "../provision.sh" #Provisioner script
-	#    box.vm.provision "shell", path: "../Docker/provision.sh" #Docker script
-	#    box.vm.provision "shell", path: "../NodeJS/provision.sh" #NodeJS script
-	#    if box.vm.hostname =~ /master/ then
-	#	box.vm.provision "shell", path: "./provision.sh" #Blockchain script
-	#	box.vm.provision "shell", path: "../NewRelic/provision.sh" #NewRelic script
-	#	box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
-#	end	
-#	  if box.vm.hostname =~ /node/ then
-#		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"		
-	#end
+	    box.vm.provision "shell", path: "../provision.sh" #Provisioner script
+	    box.vm.provision "shell", path: "../Docker/provision.sh" #Docker script
+	    box.vm.provision "shell", path: "../NodeJS/provision.sh" #NodeJS script
+	    if box.vm.hostname =~ /master/ then
+		box.vm.provision "shell", path: "./provision.sh" #Blockchain script
+		box.vm.provision "shell", path: "../NewRelic/provision.sh" #NewRelic script
+		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
+	end	
+	  if box.vm.hostname =~ /node/ then
+		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"		
+	end
+###############################################
+#######**REMOTE PROVISION SCRIPTS**############
+###############################################
+
+# 	     box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh" #Provisioner script
+#	    box.vm.provision "shell", inline: "curl -sSLf #{NODEJS} | sudo sh" #NodeJS script
+#	    box.vm.provision "shell", inline: "curl -sSLf #{DOCKER} | sudo sh" #Docker script
+#	    if box.vm.hostname =~ /master/ then
+#		box.vm.provision "shell", inline: "curl -sSLf #{BLOCKCHAIN} | sudo sh" #Blockchain script
+#		box.vm.provision "shell", inline: "curl -sSLf #{NEW_RELIC} | sudo sh" #NewRelic script
+#		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
+#	end
+#  if box.vm.hostname =~ /node/ then
+#		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
+#	end 
+
 end
 end
 end
