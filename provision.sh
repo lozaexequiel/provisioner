@@ -9,6 +9,7 @@ echo "#                                               #"
 echo "#################################################"
 echo ""
 }
+
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then

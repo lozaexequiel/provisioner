@@ -13,8 +13,8 @@ echo ""
 
 variables ()
 {
-if [ ! -f /vagrant_data/.env/.env ];then
-    cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
+if [ ! -f /vagrant_data/.env/.env ]; then
+cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
 fi
 ls -lah /vagrant_data/.env/
 . /vagrant_data/.env/.env
