@@ -16,7 +16,7 @@ variables ()
 if [ ! -f /vagrant_data/.env/.env ]; then
 cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
 fi
-ls -la /vagrant_data/.env/
+ls -lah /vagrant_data/.env/
 . /vagrant_data/.env/.env
 }
 
@@ -29,7 +29,7 @@ curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg 
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 apt-get update
 apt-get install nodejs -y
-node -v
+echo NODEJS_VERSION=$(node -v) >> /vagrant_data/.env/.configVariables
 }
 
 header
