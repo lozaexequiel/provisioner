@@ -5,7 +5,7 @@ header ()
 {
 echo "#################################################"
 echo "#                                               #"
-echo "#             NEW RELIC PROVISIONER             #"
+echo "#             GIT CONFIGURATION                 #"
 echo "#                                               #"
 echo "#################################################"
 echo " "
@@ -20,13 +20,20 @@ ls -la /vagrant_data/.env/
 . /vagrant_data/.env/.env
 }
 
-install_new_relic ()
+git_config ()
 {
-ansible-galaxy role install newrelic.newrelic_install
-ansible-playbook -i /vagrant_data/.env/inventory newrelic_install.yml -e "@/vagrant_data/.env/.env"
-newrelic --version
+git config --global user.name "${GIT_USER}"
+git config --global user.email  ${EMAIL}
+git config --global core.editor "vim"
 }
+
+get_commits_list ()
+{
+git log --pretty=format:"%h - %an, %ar : %s" > /vagrant_data/.env/commits.txt
+}
+
 
 header
 variables
-install_new_relic
+git_config
+get_commits_list

@@ -1,0 +1,5 @@
+[linux]
+192.168.0.30
+
+[windows]
+windowsserver.example.com ansible_connection=winrm ansible_winrm_server_cert_validation=ignore

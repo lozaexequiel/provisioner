@@ -22,8 +22,7 @@ ls -la /vagrant_data/.env/
 
 install_new_relic ()
 {
-ansible-galaxy role install newrelic.newrelic_install
-ansible-playbook -i /vagrant_data/.env/inventory newrelic_install.yml -e "@/vagrant_data/.env/.env"
+curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY=${NEW_RELIC_API_KEY} NEW_RELIC_ACCOUNT_ID=${NEW_RELIC_ACCOUNT_ID} /usr/local/bin/newrelic install -y
 newrelic --version
 }
 
