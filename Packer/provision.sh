@@ -27,12 +27,21 @@ sudo apt update
 sudo apt install -y gnupg2 curl software-properties-common
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt install -y packer
+if [ -z ${PACKER_VERSION+x} ]; then
+sudo apt-get update && sudo apt-get install packer
+else
+sudo apt-get update && sudo apt-get install packer=${PACKER_VERSION}
+fi
+packer version
+}
+
+packer_plugins ()
+{
 packer plugins install github.com/hashicorp/amazon
 packer plugins install github.com/hashicorp/ansiblepacker plugins install github.com/hashicorp/ansible
-packer version
 }
 
 header
 variables
 packer_provision
+packer_plugins
