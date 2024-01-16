@@ -24,16 +24,9 @@ git_config ()
 {
 git config --global user.name "${GIT_USER}"
 git config --global user.email  ${EMAIL}
-git config --global core.editor "vim"
+git config --global core.editor ${EDITOR}
 }
-
-get_commits_list ()
-{
-git log --pretty=format:"%h - %an, %ar : %s" > /vagrant_data/.env/commits.txt
-}
-
 
 header
 variables
 git_config
-get_commits_list
