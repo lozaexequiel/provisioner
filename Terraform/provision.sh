@@ -22,15 +22,12 @@ ls -la /vagrant_data/.env/
 
 terraform_provision ()
 {
-sudo apt-get update
-sudo apt-get install -y gnupg2 curl software-properties-common
+sudo apt update
+sudo apt install -y gnupg2 curl software-properties-common
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-if [ -z ${TERRAFORM_VERSION+x} ]; then
-sudo apt-get update && sudo apt-get install terraform
-else
-sudo apt-get update && sudo apt-get install terraform=${TERRAFORM_VERSION}
-fi
+sudo apt update
+sudo apt install terraform -y
 terraform version
 }
 
