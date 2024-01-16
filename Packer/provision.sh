@@ -1,10 +1,25 @@
 #!/bin/bash
 # remove comment if you want to enable debugging
 #set -x
+header ()
+{
+echo "#################################################"
+echo "#                                               #"
+echo "#          TERRAFORM CONFIGURATION              #"
+echo "#                                               #"
+echo "#################################################"
+echo " "
+}
+
 variables ()
 {
+if [ ! -f /vagrant_data/.env/.env ]; then
+cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
+fi
+ls -la /vagrant_data/.env/
 . /vagrant_data/.env/.env
 }
+
 
 packer_provision ()
 {
@@ -15,8 +30,9 @@ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(l
 sudo apt install -y packer
 packer plugins install github.com/hashicorp/amazon
 packer plugins install github.com/hashicorp/ansiblepacker plugins install github.com/hashicorp/ansible
-#cloudflare API
-#sudo apt install libwww-perl -y
+packer version
+}
 
+header
 variables
 packer_provision
