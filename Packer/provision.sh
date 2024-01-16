@@ -32,14 +32,6 @@ sudo apt-get install packer -y
 packer version
 }
 
-packer_plugins ()
-{
-packer plugins install github.com/hashicorp/amazon
-packer plugins install github.com/hashicorp/ansiblepacker
-packer plugins install github.com/hashicorp/ansible
-}
-
 header
 variables
 packer_provision
-packer_plugins
