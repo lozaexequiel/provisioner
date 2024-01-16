@@ -35,7 +35,8 @@ packer version
 packer_plugins ()
 {
 packer plugins install github.com/hashicorp/amazon
-packer plugins install github.com/hashicorp/ansiblepacker plugins install github.com/hashicorp/ansible
+packer plugins install github.com/hashicorp/ansiblepacker
+packer plugins install github.com/hashicorp/ansible
 }
 
 header
