@@ -31,6 +31,14 @@ sudo apt install terraform -y
 terraform version
 }
 
+terraform_apply ()
+{
+cd /vagrant_data/
+terraform plan -var-file secret.tfvars -out=${TF_PLAN_PATH}
+terraform apply ${TF_PLAN_PATH}
+}
+
 header
 variables
 terraform_provision
+terraform_apply

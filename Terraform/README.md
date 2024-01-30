@@ -1,31 +1,52 @@
 # Terraform dev environment
 
-If you want an specific version of Terraform you must define the next variable in the .env/.env file:
+## Table of contents
 
-```bash
-TERRAFORM_VERSION="1.4.6"
-```
+- [Terraform dev environment](#terraform-dev-environment)
+	- [Table of contents](#table-of-contents)
+	- [Prerequisites](#prerequisites)
+	- [Usage](#usage)
+	- [Variables](#variables)
+		- [Global Variables](#global-variables)
+	- [Terraform documentation](#terraform-documentation)
+
+## Prerequisites
+
+- [Git](https://git-scm.com/downloads)
+- Vagrant
+- VirtualBox
+- [Terraform](https://www.terraform.io/downloads.html)
+
+## Usage
 
 To start the environment, run the following command:
 
 ```vagrant up```
 
-This will start a virtual machine with Vault installed and configured, storing the keys and tokens in the directory ```/vagrant_data/.env```.
+This will start a virtual machine with Terraform installed.
 
-The terraform files structure is as follows:
+## Variables
 
-~~~bash
-./
-├── .env/
-│   ├── terraform/
-│   │   ├──  # Vault app secret information
-│   │   ├── 
-│   │   ├── secret
-│   │   ├── role_id
-│   │   ├── secret_id
+### Global Variables
 
-~~~
+This section contains the default or global variables used in the scripts.
+
+| Variable name | Description | Default value |
+| --- | --- | --- |
+| USER | User name | vagrant |
+| HOME | User home | /home/vagrant |
+| PACKAGES | Packages to install | docker.io ansible unzip python3-pip docker-compose git |
+| ENV_FILE | Environment file | /vagrant_data/.env/.env |
+| ENV_PATH | Environment path | /vagrant_data/.env |
+
+---
 
 ## Terraform documentation
 
 The terraform full documentation can be found in [Terraform website](https://www.terraform.io/docs/index.html)
+
+---
+
+[Back to top](#terraform-dev-environment)
+
+[Back to Home repository](../README.md)
