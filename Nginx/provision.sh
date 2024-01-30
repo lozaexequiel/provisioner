@@ -24,7 +24,7 @@ install_nginx ()
 {
 echo "Installing Nginx"
 sudo apt-get update
-docker-compose up -env-file ${ENV_FILE} -d
+docker-compose up --env-file ${ENV_FILE} -d
 docker ps -a
 }
 
