@@ -1,6 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-BOX="ubuntu/lunar64"
+BOX="ubuntu/jammy64"
 SCRIPT_REPOSITORY = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/provision.sh"
 DOCKER="https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Docker/provision.sh"
 VAGRANT_PATH = "/vagrant_data"
