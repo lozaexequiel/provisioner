@@ -1,6 +1,13 @@
 #!/bin/bash
 #set -x
-
+variables ()
+{
+if [ ! -f /vagrant_data/.env/.env ]; then
+mkdir -p /vagrant_data/.env
+cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
+fi
+. /vagrant_data/.env/.env
+}
 install_cloudflarecli ()
 {
 sudo mkdir -p --mode=0755 /usr/share/keyrings
@@ -16,5 +23,6 @@ apt autoremove -y
 apt clean
 }
 
+variables
 install_cloudflarecli
 clean_up

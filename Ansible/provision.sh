@@ -3,6 +3,10 @@
 #set -x
 variables ()
 {
+if [ ! -f /vagrant_data/.env/.env ]; then
+mkdir -p /vagrant_data/.env
+cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
+fi
 . /vagrant_data/.env/.env
 }
 
