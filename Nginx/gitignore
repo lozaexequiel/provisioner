@@ -9,8 +9,8 @@
 *.tf
 # .tfstate files
 *.tfstate
+*.tfplan
 *.tfstate.*
-*.plan
 override.tf
 override.tf.json
 *_override.tf
