@@ -13,13 +13,13 @@ echo ""
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then
+mkdir -p /vagrant_data/.env
 cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
 fi
-ls -la /vagrant_data/.env/
 . /vagrant_data/.env/.env
 }
 
-disable_swap () 
+disable_swap ()
 {
 sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 swapoff -a
@@ -34,14 +34,13 @@ chown -R ${USER}:${USER} ${HOME}/.ssh
 ssh-add ${HOME}/.ssh/mykey
 eval "$(ssh-agent -s)"
 fi
-
 }
 
 install_dependencies ()
 {
 apt update
-apt install -y ${PACKAGES}
 apt upgrade -y
+apt install -y ${PACKAGES}
 }
 
 clean_up ()
@@ -49,6 +48,7 @@ clean_up ()
 apt autoremove -y
 apt clean
 }
+
 header
 variables
 disable_swap

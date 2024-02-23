@@ -1,0 +1,48 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+BOX="ubuntu/jammy64"
+SCRIPT_REPOSITORY = "../provision.sh"
+DOCKER="../Docker/provision.sh"
+NORDVPN="../NordVPN/provision.sh"
+NGINX="./provision.sh"
+VAGRANT_PATH = "/vagrant_data"
+PROVIDER       = "virtualbox"
+# Define master resources
+MASTER_MEMORY   = "4096"
+MASTER_CPU_COUNT = "2"
+MASTER_IP       = "192.168.0.130"
+# Define node resources
+NODE_MEMORY   = "4096"
+NODE_CPU_COUNT = "2"
+INTERFACE = "Realtek Gaming GbE Family Controller"
+NODE_01_IP       = "192.168.0.34"
+# Define Vagrant configuration
+Vagrant.configure("2") do |config|
+	config.vm.box = BOX
+	boxes = [
+	  { :name => "master-01", :ip => MASTER_IP, :cpus => MASTER_CPU_COUNT, :memory => MASTER_MEMORY, :bridge => INTERFACE },
+	 # { :name => "node-01", :ip => NODE_01_IP, :cpus => NODE_CPU_COUNT, :memory => NODE_MEMORY },
+	]
+	boxes.each do |opts|
+	  config.vm.define opts[:name] do |box|
+	    box.vm.synced_folder ".", VAGRANT_PATH
+	    box.vm.hostname = opts[:name]
+	    box.vm.network :public_network, ip: opts[:ip], bridge: opts[:bridge]
+	    box.vm.provider PROVIDER do |vb|
+	      vb.cpus = opts[:cpus]
+	      vb.memory = opts[:memory]
+	    end
+	  if box.vm.hostname =~ /master/ then
+	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"
+	    box.vm.provision "shell", path: DOCKER
+	    box.vm.provision "shell", path: NORDVPN
+	    box.vm.provision "shell", path: NGINX
+	    box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
+	end
+	  if box.vm.hostname =~ /node/ then
+		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ..."
+		box.vm.provision "shell", inline: "echo 'No provisioner for nodes' && exit 0"
+	end
+end
+end
+end

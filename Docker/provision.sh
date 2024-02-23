@@ -14,9 +14,10 @@ echo ""
 variables ()
 {
 if [ ! -f /vagrant_data/.env/.env ]; then
+mkdir -p /vagrant_data/.env
 cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
 fi
-ls -lah /vagrant_data/.env/
+ls -la /vagrant_data/.env/
 . /vagrant_data/.env/.env
 }
 
@@ -35,6 +36,7 @@ systemctl enable docker
 systemctl restart docker
 systemctl status docker | grep Active
 }
+
 header
 variables
 docker_provision

@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   db:
-    image: $DB_IMAGE:$DB_TAG
+    image: "${DB_IMAGE}:${DB_TAG}"
     restart: "${RESTART_POLICY}"
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
@@ -14,7 +14,7 @@ services:
     env_file:
       - /vagrant_data/.env/.env
   app:
-    image: $DOCKER_IMAGE:$DOCKER_TAG
+    image: ${DOCKER_IMAGE}:${DOCKER_TAG}"
     restart: "${RESTART_POLICY}"
     ports:
       - "80:80"
@@ -34,4 +34,3 @@ services:
       - /vagrant_data/.env/.env
     depends_on:
       - db
-
