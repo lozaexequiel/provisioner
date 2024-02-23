@@ -1,8 +1,7 @@
 # AWS CLI Provisioner
 
 ## Table of Contents
-- [Home repository](../README.md)
-- [AWS CLI Provisioner](#aws-cli-provisioner)
+
 	- [Table of Contents](#table-of-contents)
 	- [Prerequisites](#prerequisites)
 	- [Variables](#variables)

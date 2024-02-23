@@ -25,3 +25,7 @@ To get the initial password admin to login in Jenkins, you can find in the follo
 ## Jenkins documentation
 
 The jenkins full documentation can be found in [Jenkins website](https://www.jenkins.io/)
+
+[Back to top](#jenkins-provisioner)
+
+[Back to Home repository](../README.md)
