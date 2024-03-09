@@ -23,6 +23,8 @@ crash.log
 .env/.aws/credentials
 .env/.aws/config
 .env/.env
+.env/.env/.ansible
+.env/.env/.ansible/.ssh
 # VM files	
 .vagrant/
 
