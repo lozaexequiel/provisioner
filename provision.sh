@@ -41,6 +41,5 @@ apt clean
 header
 variables
 disable_swap
-create_ssh_key
 install_dependencies
 clean_up
