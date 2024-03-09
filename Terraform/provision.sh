@@ -22,17 +22,20 @@ fi
 
 terraform_provision ()
 {
-sudo apt update
-sudo apt install -y gnupg2 curl software-properties-common
+apt update
+apt install -y gnupg2 curl software-properties-common
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt update
-sudo apt install terraform -y
+apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+apt update
+apt install terraform -y
 terraform version
 }
 
 terraform_apply ()
 {
+if [ ! -z ${TF_VARS} ]; then
+grep 'TF_VARS' .env.example >> /vagrant_data/.env/.env
+fi
 cd /vagrant_data/
 terraform plan -var-file ${TF_VARS} -out=${TF_PLAN_PATH}
 terraform apply ${TF_PLAN_PATH}
