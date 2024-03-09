@@ -25,17 +25,6 @@ sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 swapoff -a
 }
 
-create_ssh_key ()
-{
-if [ ! -f ${HOME}/.ssh/mykey ]; then
-mkdir -p ${HOME}/.ssh
-ssh-keygen -t rsa -b 4096 -C "${USER}@${HOSTNAME}" -f ${HOME}/.ssh/mykey -q -N ""
-chown -R ${USER}:${USER} ${HOME}/.ssh
-ssh-add ${HOME}/.ssh/mykey
-eval "$(ssh-agent -s)"
-fi
-}
-
 install_dependencies ()
 {
 apt update
