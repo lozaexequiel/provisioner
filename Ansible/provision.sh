@@ -54,10 +54,9 @@ fi
 hostname=$(hostname)
 case "$hostname" in
   *master*)
+	create_ssh_key
     	echo "Configuring ansible master with hostname: $hostname"
-	cp ${HOME}/.ssh/mykey ${ANSIBLE_PATH}/.ssh/mykey
 	cp ${HOME}/.ssh/mykey.pub ${ANSIBLE_PATH}/.ssh/mykey.pub
-	cp ${HOME}/.ssh/authorized_keys ${ANSIBLE_PATH}/.ssh/authorized_keys
 	chmod 700 ${ANSIBLE_PATH}/.ssh
 	chmod 600 ${ANSIBLE_PATH}/.ssh/authorized_keys
 	chown -R ${USER}:${USER} ${ANSIBLE_PATH}/.ssh
