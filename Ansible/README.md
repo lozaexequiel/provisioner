@@ -1,14 +1,15 @@
 # Ansible Provisioner
 
 ## Table of Contents
+
 - [Home repository](../README.md)
 - [Ansible Provisioner](#ansible-provisioner)
-	- [Table of Contents](#table-of-contents)
-	- [Prerequisites](#prerequisites)
-	- [Variables](#variables)
-		- [Global Variables](#global-variables)
-		- [Ansible variables](#ansible-variables)
-	- [Ansible documentation](#ansible-documentation)
+- [Table of Contents](#table-of-contents)
+- [Prerequisites](#prerequisites)
+- [Variables](#variables)
+- [Global Variables](#global-variables)
+- [Ansible variables](#ansible-variables)
+- [Ansible documentation](#ansible-documentation)
 
 ## Prerequisites
 
@@ -53,7 +54,7 @@ If you want an specific version of Ansible you must define the next variable in 
 ANSIBLE_VERSION="2.9.6"
 ```
 
-Default playbooks path is `/vagrant_data/ansible/PLAYBOOK/` but you can change it in the .env/.env file: 
+Default playbooks path is `/vagrant_data/ansible/PLAYBOOK/` but you can change it in the .env/.env file:
 
 ```bash
 
@@ -66,20 +67,20 @@ I have a playbook that looks like this:
   tasks:
     - name: Install Docker
       apt:
-	name: docker.io
-	state: present
-	update_cache: yes
+ name: docker.io
+ state: present
+ update_cache: yes
     - name: Install Docker Python Module
       pip:
-	name: docker
-	state: present
+ name: docker
+ state: present
     - name: Download and launch a docker web container
       docker_container:
-	name: web
-	image: nginx
-	state: started
-	ports:
-	  - "80:80"
+ name: web
+ image: nginx
+ state: started
+ ports:
+   - "80:80"
 ```
 
 To run the playbook, use the following command:
