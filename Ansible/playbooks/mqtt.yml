@@ -1,0 +1,41 @@
+---
+- hosts: node
+  vars:
+    mosquitto_config_file: /etc/mosquitto/conf.d/mosquitto.conf
+    mosquitto_retention_period: 120
+  tasks:
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+      become: true
+
+    - name: Install Mosquitto
+      apt:
+        name: mosquitto
+        state: present
+      become: true
+
+    - name: Configure Mosquitto
+      block:
+        - name: Import Mosquitto Configuration
+          copy:
+            content: |
+              persistence true
+              autosave_interval 1800
+              persistence_file mosquitto.db
+              connection_messages true
+              log_timestamp true
+              allow_anonymous true
+              autosave_on_changes true
+              message_size_limit 0
+              retained_persistence true
+              autosave_interval {{ mosquitto_retention_period }}
+            dest: "{{ mosquitto_config_file }}"
+          become: true
+
+    - name: Restart Mosquitto
+      systemd:
+            name: mosquitto
+            state: restarted
+      become: true
+...

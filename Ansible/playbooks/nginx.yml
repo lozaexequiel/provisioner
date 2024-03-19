@@ -1,0 +1,30 @@
+---
+- hosts: proxy
+  become: true
+  vars_files:
+    - /vagrant_data/.env/.nginx/vars.yml
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Check if Nginx configuration file exists
+      stat:
+        path: /vagrant_data/.env/.nginx/nginx.conf
+      register: nginx_conf
+
+    - name: Copy Nginx configuration file
+      copy:
+        src: /vagrant_data/.env/.nginx/nginx.conf
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: '0644'
+      when: nginx_conf.stat.exists
+
+    - name: Restart Nginx
+      systemd:
+        name: nginx
+        state: restarted
