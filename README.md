@@ -1,13 +1,24 @@
 # Provisioner
 
+## Table of Contents
+
+- [Provisioner](#provisioner)
+	- [Table of Contents](#table-of-contents)
+	- [Prerequisites](#prerequisites)
+	- [Vagrantfile](#vagrantfile)
+	- [Tools in for this project](#tools-in-for-this-project)
+	- [Access the shared folder](#access-the-shared-folder)
+	- [Installing the tools](#installing-the-tools)
+	- [Warning](#warning)
+	- [Errors](#errors)
+	- [Author](#author)
+
 This directory contains the configuration files for provision tools.
 
 ## Prerequisites
 
 - [Vagrant](https://www.vagrantup.com/)
 - [VirtualBox](https://www.virtualbox.org/)
-- [AWS Account](https://aws.amazon.com/)
-- [AWS IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html) (to create the AWS resources)
 
 The project folder structure is as follows:
 
@@ -23,12 +34,6 @@ The project folder structure is as follows:
 ├── README.md
 ├── Vagrantfile
 
-~~~
-
-If you don't have the .env folder, you can create it by running the following command:
-
-~~~bash
-mkdir .env && cd .env && mkdir .aws && touch .env && touch .aws/config && touch .aws/credentials
 ~~~
 
 ## Vagrantfile
@@ -67,12 +72,18 @@ Please read the README.md of each tool to know how to configure it.
 
 ## Warning
 
-The tools are installed in the virtual machine, not in the host machine.
+The tools are installed in the virtual machine, not in the host machine please check the virtual machine IP address to access the installed tools. The virtual machine IP address is shown in the terminal after running the `vagrant up` command.
 
 ## Errors
 
 Common issues can be found in the error [folder](./errors/README.md).
 
 ---
+
+## Author
+
+Exequiel Loza - [web.lozaexequiel.com](https://web.lozaexequiel.com)
+
+For more information on my projects, please visit my [GitHub profile](https://github.com/lozaexequiel).
 
 [Back to top](#provisioner)
