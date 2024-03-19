@@ -15,7 +15,8 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-
+.obsidian/
+**/.env
 # Crash log files
 crash.log
 # Ignore environment configuration files
