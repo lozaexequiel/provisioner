@@ -22,9 +22,9 @@ crash.log
 /Nginx/.env
 .env/.aws/credentials
 .env/.aws/config
-.env/.env
-.env/.env/.ansible
-.env/.env/.ansible/.ssh
+.env/
+.env/.ansible/.inventory
+.env/.ansible/.ssh
 # VM files	
 .vagrant/
 
