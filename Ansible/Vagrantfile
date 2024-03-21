@@ -9,6 +9,9 @@ PROVIDER="virtualbox"
 IP="192.168.0"
 NETWORK="public_network"
 INTERFACE="Realtek Gaming GbE Family Controller"
+# Define ansible resources
+ANSIBLE_MEMORY="8192"
+ANSIBLE_CPU_COUNT="4"
 # Define master resources
 MASTER_COUNT=1
 MASTER_MEMORY="8192"
@@ -25,24 +28,24 @@ Vagrant.configure("2") do |config|
 	  exit 1
 	end
 	boxes = []
+	boxes << { :name => "ansible", :ip => "#{IP}.10", :cpus => ANSIBLE_CPU_COUNT, :memory => ANSIBLE_MEMORY, :network => NETWORK, :bridge => INTERFACE }	
 	(1..MASTER_COUNT).each do |i|
-	  boxes << { :name => "master-#{i}", :ip => "#{IP}.#{i+10}", :cpus => MASTER_CPU_COUNT, :memory => MASTER_MEMORY, :network => NETWORK, :bridge => INTERFACE }
-	end
-	(1..NODE_COUNT).each do |i|
-	  boxes << { :name => "node-#{i}", :ip => "#{IP}.#{i+20}", :cpus => NODE_CPU_COUNT, :memory => NODE_MEMORY, :network => NETWORK, :bridge => INTERFACE }
-	end
-	boxes.each do |opts|
-	  config.vm.define opts[:name] do |box|
-	    box.vm.synced_folder ".", VAGRANT_PATH
-	    box.vm.hostname = opts[:name]
-	    box.vm.network opts[:network], bridge: opts[:bridge], ip: opts[:ip]
-	    box.vm.provider PROVIDER do |vb|
-	      vb.cpus = opts[:cpus]
-	      vb.memory = opts[:memory]
-	    end
-	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"	    
-	    box.vm.provision "shell", path: ANSIBLE
-	    end
-	  end
-	end
-end
+		boxes << { :name => "master-#{i}", :ip => "#{IP}.#{i+10}", :cpus => MASTER_CPU_COUNT, :memory => MASTER_MEMORY, :network => NETWORK, :bridge => INTERFACE }
+	      end
+	      (1..NODE_COUNT).each do |i|
+		boxes << { :name => "node-#{i}", :ip => "#{IP}.#{i+20}", :cpus => NODE_CPU_COUNT, :memory => NODE_MEMORY, :network => NETWORK, :bridge => INTERFACE }
+	      end
+	      boxes.each do |opts|
+		config.vm.define opts[:name] do |box|
+		  box.vm.synced_folder ".", VAGRANT_PATH
+		  box.vm.hostname = opts[:name]
+		  box.vm.network opts[:network], bridge: opts[:bridge], ip: opts[:ip]
+		  box.vm.provider PROVIDER do |vb|
+		    vb.cpus = opts[:cpus]
+		    vb.memory = opts[:memory]
+		  end
+		  box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"	    
+		  box.vm.provision "shell", path: ANSIBLE
+	      end
+	      end
+      end
