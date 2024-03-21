@@ -19,4 +19,4 @@ yes |sudo ansible node -m ping -i ${INVENTORY_FILE}
 }
 
 variables
-ansible_provision
+ansible_test
