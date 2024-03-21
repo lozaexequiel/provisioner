@@ -2,6 +2,7 @@
 #set -x
 header ()
 {
+echo ""
 echo "#################################################"
 echo "#                                               #"
 echo "#                   PROVISIONER                 #"
@@ -13,24 +14,24 @@ echo ""
 variables ()
 {
 if [ ! -d /vagrant_data/.env ]; then
-echo "WARNING! The .env directory does not exist or is not detected"
+echo "INFO: The .env directory does not exist or is not detected"
 echo "Creating .env directory in /vagrant_data"
 mkdir -p /vagrant_data/.env
 fi
-if [ ! -f /vagrant_data/.env/.env ]; then
-  echo "WARNING! The .env file does not exist or is not detected"
+if [ ! -f /vagrant_data/.env/.env ] || [ ! -s /vagrant_data/.env/.env ]; then
+  echo "INFO: The .env file does not exist, is not detected, or the file is empty"
   if [ -f /vagrant_data/.env/.env.example ]; then
-    echo "Example file detected, creating .env file from example"
+    echo "INFO: Example file detected, creating .env file from example"
     cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
   else
-    echo "Creating an empty .env file"
+    echo "INFO: Creating an empty .env file"
     touch /vagrant_data/.env/.env
-    echo "Please fill in the .env file with the required variables and run the script again"
+    echo "ERROR: Please fill in the .env file with the required variables and run the script again"
     echo "For more information, please refer to the main repository https://github.com/lozaexequiel/provisioner"
     exit 1
   fi
 fi
-echo "Sourcing environment variables from /vagrant_data/.env/.env"
+echo "INFO: Sourcing environment variables from file"
 . /vagrant_data/.env/.env
 }
 
