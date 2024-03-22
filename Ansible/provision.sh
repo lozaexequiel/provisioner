@@ -6,15 +6,15 @@ provision ()
 curl -s https://raw.githubusercontent.com/lozaexequiel/provisioner/main/provision.sh -o functions.sh
 . functions.sh
 variables
-#header
-#disable_swap
-#install_dependencies
-#ansible_provision
+header
+disable_swap
+install_dependencies
+ansible_provision
 ansible_ssh_key
-#ansible_config
-#ansible_inventory
+ansible_config
+ansible_inventory
 permission_ssh_key
-#clean_up
+clean_up
 }
 
 ansible_provision ()
@@ -41,16 +41,13 @@ ansible_ssh_key ()
       chmod 700 ${SSH_DIR}
       cd ${SSH_DIR}
       echo "User: ${USER}"
-echo "Hostname: ${hostname}"
-echo "Private key file: ${PRIVATE_KEY_FILE}"
-ls -lah $(dirname ${PRIVATE_KEY_FILE})
-ssh-keygen -t rsa -b 4096 -C "${USER}@${hostname}" -f ${PRIVATE_KEY_FILE} -N "" 
+      ssh-keygen -t rsa -b 4096 -C "${USER}@${hostname}" -f ${PRIVATE_KEY_FILE} -N "" 
       chown -R ${USER}:${USER} ${SSH_DIR}
       eval "$(ssh-agent -s)"
       ssh-add ${PRIVATE_KEY_FILE}
       mkdir -p $(dirname ${REMOTE_PUBLIC_KEY_FILE})
-      cp ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}
-      echo "INFO: The ssh key has been created, you can find it in ${REMOTE_PUBLIC_KEY_FILE}"
+      cp ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}      
+      echo "INFO: The public key has been copied to the remote server"
     else
       echo "INFO: A private key already exists"
     fi
