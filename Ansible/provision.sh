@@ -1,55 +1,35 @@
 #!/bin/bash
 #set -x
-header ()
-{
-echo "#################################################"
-echo "#                                               #"
-echo "#              ANSIBLE PROVISIONER              #"
-echo "#                                               #"
-echo "#################################################"
-echo ""
-}
 
-variables ()
+provision ()
 {
-if [ ! -d /vagrant_data/.env ]; then
-echo "WARNING! The .env directory does not exist or is not detected"
-echo "Creating .env directory in /vagrant_data"
-mkdir -p /vagrant_data/.env
-fi
-if [ ! -f /vagrant_data/.env/.env ]; then
-  echo "WARNING! The .env file does not exist or is not detected"
-  if [ -f /vagrant_data/.env/.env.example ]; then
-    echo "Example file detected, creating .env file from example"
-    cp /vagrant_data/.env/.env.example /vagrant_data/.env/.env
-  else
-    echo "Creating an empty .env file"
-    touch /vagrant_data/.env/.env
-    echo "Please fill in the .env file with the required variables and run the script again"
-    echo "For more information, please refer to the main repository https://github.com/lozaexequiel/provisioner"
-    exit 1
-  fi
-fi
-echo "Sourcing environment variables from /vagrant_data/.env/.env"
-. /vagrant_data/.env/.env
+curl -s https://raw.githubusercontent.com/lozaexequiel/provisioner/main/provision.sh -o functions.sh
+. functions.sh
+variables
+#header
+#disable_swap
+#install_dependencies
+#ansible_provision
+ansible_ssh_key
+#ansible_config
+#ansible_inventory
+permission_ssh_key
+#clean_up
 }
 
 ansible_provision ()
 {
-apt update
 if [ ! -d ${ANSIBLE_PATH} ]; then
 mkdir -p ${ANSIBLE_PATH}
 fi
-hostname=$(hostname)
-ipAddress=$(hostname -I | awk '{print $2}') # Get the second IP address because the first one is the localhost or the private IP
 if [ -z ${ANSIBLE_VERSION+x} ]; then
-echo "INFO: Installing the latest version of ansible"
-apt install -y ansible
+echo "INFO: Installing the latest version of ${EXTRA_PACKAGES}"
+apt-get install -y ${EXTRA_PACKAGES}
 else
-echo "INFO: Installing ansible version: ${ANSIBLE_VERSION}"
-apt install -y ansible=${ANSIBLE_VERSION}
+echo "INFO: Installing ${EXTRA_PACKAGES} version ${ANSIBLE_VERSION}"
+apt-get install -y ${EXTRA_PACKAGES}=${ANSIBLE_VERSION}
 fi
-ansible --version
+${TEST_COMMAND}
 }
 
 ansible_ssh_key ()
@@ -58,7 +38,13 @@ ansible_ssh_key ()
     *ansible*)
     if [ ! -f ${PRIVATE_KEY_FILE} ]; then
       mkdir -p ${SSH_DIR}
-      ssh-keygen -t rsa -b 4096 -C "${USER}@${HOSTNAME}" -f ${PRIVATE_KEY_FILE} -q -N ""
+      chmod 700 ${SSH_DIR}
+      cd ${SSH_DIR}
+      echo "User: ${USER}"
+echo "Hostname: ${hostname}"
+echo "Private key file: ${PRIVATE_KEY_FILE}"
+ls -lah $(dirname ${PRIVATE_KEY_FILE})
+ssh-keygen -t rsa -b 4096 -C "${USER}@${hostname}" -f ${PRIVATE_KEY_FILE} -N "" 
       chown -R ${USER}:${USER} ${SSH_DIR}
       eval "$(ssh-agent -s)"
       ssh-add ${PRIVATE_KEY_FILE}
@@ -70,19 +56,10 @@ ansible_ssh_key ()
     fi
     ;;
     *)
-    cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
+    cat ${REMOTE_PUBLIC_KEY_FILE} >> ${HOME}/authorized_keys
     ;;    
   esac   
 }
-
-permission_ssh_key ()
-{
-chmod 700 ${SSH_DIR}
-chmod 600 ${SSH_DIR}/authorized_keys
-chown -R ${USER}:${USER} ${SSH_DIR}
-}
-
-
 
 ansible_config ()
 {   
@@ -107,6 +84,7 @@ ansible_config ()
     *)    
     ;;
   esac  
+}
 
 ansible_inventory ()
 {
@@ -122,8 +100,7 @@ else
       echo "" >> ${INVENTORY_FILE}
       echo "[other]" >> ${INVENTORY_FILE}
       echo "" >> ${INVENTORY_FILE}
-      echo "INVENTORY_FILE file created successfully"
-      echo "you can find the file in ${ANSIBLE_PATH}"
+      echo "INFO: INVENTORY_FILE file created, you can find the file in ${ANSIBLE_PATH}"      
     fi
     ;;      
     *master*)
@@ -142,10 +119,4 @@ else
   esac
 }
 
-header
-variables
-ansible_provision
-ansible_ssh_key
-ansible_config
-permission_ssh_key
-ansible_inventory
+provision
