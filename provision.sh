@@ -22,7 +22,7 @@ mkdir -p /vagrant_data/.env
 fi
 if [ ! -f /vagrant_data/.env/.env ] || [ ! -s /vagrant_data/.env/.env ]; then
   echo "INFO: The .env file does not exist, is not detected, or the file is empty"
-  if [ -f /vagrant_data/.env/.env.example ]; then
+  if [ -f /vagrant_data/example/.env.example ]; then
     echo "INFO: Example file detected, creating .env file from example"
     cp /vagrant_data/example/.env.example /vagrant_data/.env/.env
   else
