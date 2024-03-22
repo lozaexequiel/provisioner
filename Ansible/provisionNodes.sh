@@ -15,7 +15,7 @@ fi
 ansible_test ()
 {
 cd ${ANSIBLE_DIR}
-yes |sudo ansible node -m ping -i ${INVENTORY_FILE}
+sudo ANSIBLE_HOST_KEY_CHECKING=False ansible all -m ping -i ${INVENTORY_FILE} -u ${USER} --private-key=${PRIVATE_KEY_FILE}
 }
 
 variables
