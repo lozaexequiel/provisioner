@@ -122,8 +122,6 @@ The tools are installed in the virtual machine, not in the host machine please c
 
 Common issues can be found in the error [folder](./errors/README.md).
 
----
-
 ## Author
 
 Exequiel Loza - [web.lozaexequiel.com](https://web.lozaexequiel.com)
