@@ -38,6 +38,8 @@ The basic structure of the project is as follows:
 ├── ├── /<TOOL> # Tool directory
 ~~~
 
+The `vagrant_data` directory is mounted in the virtual machine as `/vagrant_data`. The `vagrant_data` directory contains the provisioning scripts for the tools and the environment directory.
+
 ## Tools in for this project
 
 This project contains the following tools for provisioning:
