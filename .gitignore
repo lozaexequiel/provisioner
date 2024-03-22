@@ -19,11 +19,11 @@ override.tf.json
 # Crash log files
 crash.log
 # Ignore all environment files
-.env
-.env/
-.env/*
+*.env/
+*/*/.env
+*/*/.env/
 **/.env
-**/.env/*
+**/.env/
 # VM files	
 .vagrant/
 
