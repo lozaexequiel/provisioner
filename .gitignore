@@ -16,15 +16,14 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 .obsidian/
-**/.env
 # Crash log files
 crash.log
-# Ignore environment configuration files
-/Nginx/.env
-.env/.aws/credentials
-.env/.aws/config
-.env/.env
-.env/.env/.ansible
+# Ignore all environment files
+.env
+.env/
+.env/*
+**/.env
+**/.env/*
 # VM files	
 .vagrant/
 

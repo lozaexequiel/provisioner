@@ -18,13 +18,9 @@ override.tf.json
 
 # Crash log files
 crash.log
-# Ignore environment configuration files
-/Nginx/.env
-.env/.aws/credentials
-.env/.aws/config
-.env/
-.env/.ansible/.inventory
-.env/.ansible/.ssh
+# Ignore environment directory
+*.env/
+
 # VM files	
 .vagrant/
 
