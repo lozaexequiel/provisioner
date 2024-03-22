@@ -1,46 +1,46 @@
 # Provisioner
 
+This project is a collection of provisioning scripts for different tools. The provisioning scripts are written in [bash](https://www.gnu.org/software/bash/). The provisioning scripts are used to install the selected software on the virtual machine.
+The virtual machine is created using [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/).
+
 ## Table of Contents
 
 - [Provisioner](#provisioner)
 	- [Table of Contents](#table-of-contents)
 	- [Prerequisites](#prerequisites)
-	- [Vagrantfile](#vagrantfile)
+	- [Project Structure](#project-structure)
 	- [Tools in for this project](#tools-in-for-this-project)
-	- [Access the shared folder](#access-the-shared-folder)
-	- [Installing the tools](#installing-the-tools)
-	- [Warning](#warning)
-	- [Errors](#errors)
+	- [Vagrantfile](#vagrantfile)
+	- [Install](#install)
+		- [Global Variables](#global-variables)
+		- [Access the shared folder](#access-the-shared-folder)
+		- [Attention](#attention)
+		- [Errors](#errors)
 	- [Author](#author)
 
 This directory contains the configuration files for provision tools.
 
 ## Prerequisites
 
+To use this project you need to have the following software installed:
+
 - [Vagrant](https://www.vagrantup.com/)
 - [VirtualBox](https://www.virtualbox.org/)
 
-The project folder structure is as follows:
+## Project Structure
+
+The basic structure of the project is as follows:
 
 ~~~bash
-./
-
-├── .env
-│   ├── .aws
-│   │   ├── config
-│   │   └── credentials
-│   └── .env
-├── .gitignore
-├── README.md
-├── Vagrantfile
-
+./vagrant_data
+├── /.env # Environment directory
+├── ├── /.env # Environment file
+├── ├── /<TOOL> # Tool directory
 ~~~
 
-## Vagrantfile
-
-Each vagrantfile will download the provisioning scripts from this repository. The provisioning scripts will install the selected software on the virtual machine. The provisioning scripts are written in [bash](https://www.gnu.org/software/bash/).
-
 ## Tools in for this project
+
+This project contains the following tools for provisioning:
 
 - [Ansible](./Ansible/README.md)
 - [AWS CLI](./AWS_CLI/README.md)
@@ -54,27 +54,69 @@ Each vagrantfile will download the provisioning scripts from this repository. Th
 - [Vagrant](./Vagrant/README.md)
 - [Vault](./Vault/README.md)
 
-## Access the shared folder
+## Vagrantfile
 
-To access the shared folder, run the following command:
+Each vagrantfile will download the provisioning scripts from this repository. The provisioning scripts will install the selected software on the virtual machine. The provisioning scripts are written in [bash](https://www.gnu.org/software/bash/).
 
-```cd /vagrant_data```
+## Install
 
-## Installing the tools
+First, you need to clone the repository:
+
+```git clone https://github.com/lozaexequiel/provisioner.git```
+
+Then access to the repository:
+
+```cd provisioner```
+
+After that, you can access the tool you want to install:
+
+```cd vagrant_data/<TOOL>```
 
 To install the tools in the virtual machine you can run the following command:
 
+```vagrant up```
+
+### Global Variables
+
+This section contains the default or global variables used in the scripts.
+
+| Variable name | Description | Default value |
+| --- | --- | --- |
+| USER | User name | vagrant |
+| HOME | User home | /home/vagrant |
+| PACKAGES | Packages to install | ansible unzip python3-pip git |
+| VAGRANT_PATH | Vagrant path | /vagrant_data |
+
+To install the tools in the virtual machine you can run the following command:
+
+```vagrant up```
+
+After running the command, the tools will be installed in the virtual machine.
+You can access the virtual machine by running the following command:
+
+```vagrant ssh <VM_NAME>```
+
+### Access the shared folder
+
+By default, the shared folder is located in the following path:
+
+```cd /vagrant_data```
+
+To manually install the tools run the following command:
+
+```vagrant ssh <VM_NAME>```
+
+```cd /vagrant_data```
+
 ```sudo sh /vagrant_data/<TOOL>/provision.sh```
 
-Please read the README.md of each tool to know how to configure it.
+*Please read the README.md of each tool to know how to configure it.*
 
-**If you want to use the scripts from the local folder, comment the remote scripts and uncomment the local scripts. Check if the local scripts are in the same folder as the Vagrantfile.**
-
-## Warning
+### Attention
 
 The tools are installed in the virtual machine, not in the host machine please check the virtual machine IP address to access the installed tools. The virtual machine IP address is shown in the terminal after running the `vagrant up` command.
 
-## Errors
+### Errors
 
 Common issues can be found in the error [folder](./errors/README.md).
 
