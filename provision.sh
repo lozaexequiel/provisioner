@@ -47,15 +47,15 @@ swapoff -a
 
 install_dependencies ()
 {
-apt update
-apt upgrade -y
-apt install -y ${PACKAGES}
+apt-get update
+apt-get upgrade -y
+apt-get install -y ${PACKAGES}
 }
 
 clean_up ()
 {
-apt autoremove -y
-apt clean
+apt-get autoremove -y
+apt-get clean
 echo "INFO: The ${PROVISIONER_NAME} has been successfully provisioned in ${hostname} with IP address ${ipAddress}"
 }
 
