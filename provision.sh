@@ -13,6 +13,7 @@ echo ""
 
 variables ()
 {
+set -a
 hostname=$(hostname)
 ipAddress=$(hostname -I | awk '{print $2}') # Get the second IP address because the first one is the localhost or the private IP address
 if [ ! -d /vagrant_data/.env ]; then
@@ -35,6 +36,7 @@ if [ ! -f /vagrant_data/.env/.env ] || [ ! -s /vagrant_data/.env/.env ]; then
 fi
 echo "INFO: Sourcing environment variables from file"
 . /vagrant_data/.env/.env
+set +a
 }
 
 disable_swap ()
@@ -64,8 +66,8 @@ chmod 600 ${SSH_DIR}/authorized_keys
 chown -R ${USER}:${USER} ${SSH_DIR}
 }
 
-header
 variables
+header
 disable_swap
 install_dependencies
 clean_up
