@@ -48,8 +48,8 @@ swapoff -a
 install_dependencies ()
 {
 apt-get update
-apt-get upgrade -y
 apt-get install -y ${PACKAGES}
+echo "INFO: Dependencies installed, continuing with the installation in ${hostname}"
 }
 
 clean_up ()
