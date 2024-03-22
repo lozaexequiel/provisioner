@@ -5,7 +5,7 @@ header ()
 echo ""
 echo "#################################################"
 echo "#                                               #"
-echo "#              ${PROVISIONER_NAME}              #"
+echo "              ${PROVISIONER_NAME}              "
 echo "#                                               #"
 echo "#################################################"
 echo ""
@@ -65,10 +65,3 @@ chmod 700 ${SSH_DIR}
 chmod 600 ${SSH_DIR}/authorized_keys
 chown -R ${USER}:${USER} ${SSH_DIR}
 }
-
-variables
-header
-disable_swap
-install_dependencies
-clean_up
-permission_ssh_key
