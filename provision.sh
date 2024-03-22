@@ -5,7 +5,7 @@ header ()
 echo ""
 echo "#################################################"
 echo "#                                               #"
-echo "            ${PROVISIONER_NAME} provisioner      "
+echo "             ${PROVISIONER_NAME} provisioner      "
 echo "#                                               #"
 echo "#################################################"
 echo ""
