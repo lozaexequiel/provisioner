@@ -62,6 +62,6 @@ echo "INFO: The ${PROVISIONER_NAME} has been successfully provisioned in ${hostn
 permission_ssh_key ()
 {
 chmod 700 ${SSH_DIR}
-chmod 600 ${SSH_DIR}/authorized_keys
+chmod 600 ${HOME}/authorized_keys
 chown -R ${USER}:${USER} ${SSH_DIR}
 }
