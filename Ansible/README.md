@@ -1,5 +1,7 @@
 # Ansible Provisioner
 
+This directory contains the configuration files for Ansible provisioner.
+
 ## Table of Contents
 
 - [Home repository](../README.md)
@@ -13,30 +15,34 @@
 
 ## Prerequisites
 
-This repository needs the following tools to work:
+To use this project you need to have the following software installed:
 
-- [Ubuntu](https://ubuntu.com/)
-- [Ansible](https://www.ansible.com/)
+- [Vagrant](https://www.vagrantup.com/)
+- [VirtualBox](https://www.virtualbox.org/)
+
+## Project Structure
+
+The basic structure of the project is as follows:
+
+~~~bash
+./vagrant_data
+├── /.env # Environment directory
+├── ├── /.env # Environment file
+├── ├── /.ansible # Ansible directory
+├── ├── ├── /.ansible.cfg # Ansible configuration file
+├── ├── ├── /.inventory # Ansible inventory file
+├── ├── ├── /.tmp # Temporary directory
+├── ├── ├── ├── /ansible-${USER} # Remote temporary
+├── ├── ├── ├── /roles # Roles directory
+~~~
 
 ## Variables
 
-### Global Variables
+### [Global Variables](../README.md#global-variables)
 
-This section contains the default or global variables used in the scripts.
-
-| Variable name | Description | Default value |
-| --- | --- | --- |
-| USER | User name | vagrant |
-| HOME | User home | /home/vagrant |
-| PACKAGES | Packages to install | ansible unzip python3-pip git |
-| ENV_FILE | Environment file | /vagrant_data/.env/.env |
-| ENV_PATH | Environment path | /vagrant_data/.env |
-
----
+Common variables for all provisioners.
 
 ### Ansible variables
-
-This sections contains the default or global variables used in the Ansible scripts, and the documentation for the scripts.
 
 | Variable name | Description | Default value |
 | --- | --- | --- |
@@ -46,16 +52,19 @@ This sections contains the default or global variables used in the Ansible scrip
 | ANSIBLE_PATH | Ansible path | /vagrant_data/.env/.ansible |
 | ANSIBLE_CONFIG | Ansible configuration file | /vagrant_data/.env/.ansible/.ansible.cfg |
 | PRIVATE_KEY_FILE | Private key file | /home/vagrant/.ssh/mykey |
+| REMOTE_TMP | Remote temporary directory | /vagrant_data/.env/.ansible/.tmp/ansible-${USER} |
+| BECOME_USER | Become user | root |
+| ROLES_PATH | Roles path | /vagrant_data/.env/.ansible/.tmp/roles |
 
 ---
 
-## Ansible dev environment
+### Ansible version
 
-If you want an specific version of Ansible you must define the next variable in the .env/.env file:
+If you want an specific version of Ansible you can change the following variable in the environment file:
 
-`ANSIBLE_VERSION="2.9.6"`
+```ANSIBLE_VERSION=<version>```
 
-Default playbooks path is `/vagrant_data/ansible/PLAYBOOK/` but you can change it in the .env/.env file:
+Default playbooks path is `/vagrant_data/playbooks` but you can change it in the environment file.
 
 ## Ansible documentation
 
