@@ -29,7 +29,6 @@ echo "INFO: The .env file does not exist, is not detected, or the file is empty"
 if [ -f /vagrant_data/example/.env.example ]; then
 echo "INFO: Example file detected, creating .env file from example"
 cp /vagrant_data/example/.env.example /vagrant_data/.env/.env
-. /vagrant_data/.env/.env
 else
 echo "INFO: Creating an empty .env file"
 touch /vagrant_data/.env/.env
@@ -38,6 +37,7 @@ echo "For more information, please refer to the main repository https://github.c
 exit 1
 fi
 fi
+. /vagrant_data/.env/.env
 set +a
 }
 
