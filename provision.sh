@@ -59,6 +59,7 @@ clean_up ()
 apt-get autoremove -y
 apt-get clean
 echo "INFO: The ${PROVISIONER_NAME} has been successfully provisioned in ${hostname} with IP address ${ipAddress}"
+rm -rf /vagrant_data/functions.sh
 }
 
 permission_ssh_key ()
