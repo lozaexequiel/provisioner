@@ -1,7 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 BOX="ubuntu/jammy64"
-ANSIBLE="./provision.sh"
+PROVISION_SCRIPT="https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Ansible/provision.sh"
+ANSIBLE="provision.sh"
 VAGRANT_PATH="/vagrant_data"
 PROVIDER="virtualbox"
 IP="192.168.0"
@@ -15,7 +16,7 @@ MASTER_COUNT=1
 MASTER_MEMORY="8192"
 MASTER_CPU_COUNT="4"
 # Define node resources
-NODE_COUNT=1
+NODE_COUNT=0
 NODE_MEMORY="8192"
 NODE_CPU_COUNT="4"
 # Define Vagrant configuration
@@ -42,7 +43,13 @@ Vagrant.configure("2") do |config|
 		    vb.cpus = opts[:cpus]
 		    vb.memory = opts[:memory]
 		  end
-		  box.vm.provision "shell", path: ANSIBLE
+		  box.vm.provision "shell", inline: <<-SHELL
+		  if [ ! -f #{VAGRANT_PATH}/#{ANSIBLE} ]; then
+		    curl -s #{PROVISION_SCRIPT} -o #{VAGRANT_PATH}/#{ANSIBLE}
+		    chmod +x #{VAGRANT_PATH}/#{ANSIBLE}
+		  fi
+		  cd #{VAGRANT_PATH} && ./#{ANSIBLE}
+		SHELL
 	      end
 	      end
       end
