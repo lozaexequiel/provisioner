@@ -1,7 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 BOX="ubuntu/jammy64"
-PROVISION_SCRIPT="https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Ansible/provision.sh"
+PROVISION_SCRIPT="../provision.sh"
+TEST_SCRIPT="./testAnsibleConnection.sh"
 ANSIBLE="provision.sh"
 VAGRANT_PATH="/vagrant_data"
 PROVIDER="virtualbox"
@@ -45,5 +46,7 @@ Vagrant.configure("2") do |config|
 		  end
 		  box.vm.provision "shell", inline: cd #{VAGRANT_PATH} && ./#{ANSIBLE}
 	      end
+	      config.vm.define "postprovision" do |postprovision|
+		postprovision.vm.provision "shell", path: "#{TEST_SCRIPT}"
 	      end
       end
