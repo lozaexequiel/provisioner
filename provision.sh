@@ -58,7 +58,7 @@ clean_up ()
 {
 apt-get autoremove -y
 apt-get clean
-echo "INFO: The ${TOOL} has been successfully provisioned in ${hostname} with IP address ${ipAddress}"
+echo "INFO: The ${TOOL} has been successfully provisioned in ${hostname} with IP address ${ipAddress}" >> ${OUTPUT_FILE}
 rm -rf /vagrant_data/functions.sh
 }
 
