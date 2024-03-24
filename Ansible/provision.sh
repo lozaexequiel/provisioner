@@ -37,31 +37,30 @@ ansible_ssh_key ()
   case $(hostname) in
     *ansible*)
     if [ ! -f ${PRIVATE_KEY_FILE} ]; then
-      mkdir -p ${SSH_DIR}
-      chmod 700 ${SSH_DIR}
+      mkdir -p ${SSH_DIR}      
       cd ${SSH_DIR}
       echo "User: ${USER}"
-      ssh-keygen -t rsa -b 4096 -C "${USER}@${hostname}" -f ${PRIVATE_KEY_FILE} -N "" 
+      ssh-keygen -t rsa -b 4096 -C "${USER}@${hostname}" -f ${PRIVATE_KEY_FILE} -N ""
       chown -R ${USER}:${USER} ${SSH_DIR}
       eval "$(ssh-agent -s)"
       ssh-add ${PRIVATE_KEY_FILE}
       mkdir -p $(dirname ${REMOTE_PUBLIC_KEY_FILE})
-      cp ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}      
+      cp ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}
       echo "INFO: The public key has been copied to the remote server"
     else
       echo "INFO: A private key already exists"
     fi
     ;;
     *)
-    cat ${REMOTE_PUBLIC_KEY_FILE} >> ${HOME}/authorized_keys
-    ;;    
-  esac   
+    cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
+    ;;
+  esac
 }
 
 ansible_config ()
-{   
+{
   case $(hostname) in
-    *ansible*)    
+    *ansible*)
     if [ -f ${ANSIBLE_CONFIG} ]; then
       cp ${ANSIBLE_CONFIG} ${ANSIBLE_DIR}/ansible.cfg
       echo "INFO: The ansible.cfg file already exists, you can find the file in ${ANSIBLE_PATH}"
@@ -78,15 +77,15 @@ ansible_config ()
       echo "INFO: ansible.cfg file created, you can find the file in ${ANSIBLE_PATH}"
     fi
     ;;
-    *)    
+    *)
     ;;
-  esac  
+  esac
 }
 
 ansible_inventory ()
 {
     case $(hostname) in
-    *ansible*)      
+    *ansible*)
     if [ -f ${INVENTORY_FILE} ]; then
       echo "INFO: The INVENTORY_FILE file already exists"
 else
@@ -97,9 +96,9 @@ else
       echo "" >> ${INVENTORY_FILE}
       echo "[other]" >> ${INVENTORY_FILE}
       echo "" >> ${INVENTORY_FILE}
-      echo "INFO: INVENTORY_FILE file created, you can find the file in ${ANSIBLE_PATH}"      
+      echo "INFO: INVENTORY_FILE file created, you can find the file in ${ANSIBLE_PATH}"
     fi
-    ;;      
+    ;;
     *master*)
       awk -v hostline="${hostname} ansible_host=${ipAddress} ansible_user=${USER} ansible_ssh_private_key_file=${PRIVATE_KEY_FILE}" '/\[master\]/ { print; print hostline; next }1' "${INVENTORY_FILE}" > temp && mv temp "${INVENTORY_FILE}"
       echo "master host added to the [master] group"
