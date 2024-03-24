@@ -101,15 +101,15 @@ else
     ;;
     *master*)
       awk -v hostline="${hostname} ansible_host=${ipAddress} ansible_user=${USER} ansible_ssh_private_key_file=${PRIVATE_KEY_FILE}" '/\[master\]/ { print; print hostline; next }1' "${INVENTORY_FILE}" > temp && mv temp "${INVENTORY_FILE}"
-      echo "master host added to the [master] group"
+      echo "INFO: ${hostname} host added to the [master] group"
       ;;
     *node*)
       awk -v hostline="${hostname} ansible_host=${ipAddress} ansible_user=${USER} ansible_ssh_private_key_file=${PRIVATE_KEY_FILE}" '/\[node\]/ { print; print hostline; next }1' "${INVENTORY_FILE}" > temp && mv temp "${INVENTORY_FILE}"
-      echo "node host added to the [node] group"
+      echo "INFO: ${hostname} host added to the [node] group"
       ;;
     *)
-      echo "WARNING: The hostname must contain 'master' or 'node' to run this script"
-      echo "the host will be added to the [other] group"
+      echo "WARNING: The hostname must contain 'master' or 'node' to run this script, next steps could be affected"
+      echo "WARNING: ${hostname} host added to the [other] group"
       awk -v hostline="${hostname} ansible_host=${ipAddress} ansible_user=${USER} ansible_ssh_private_key_file=${PRIVATE_KEY_FILE}" '/\[other\]/ { print; print hostline; next }1' "${INVENTORY_FILE}" > temp && mv temp "${INVENTORY_FILE}"
       ;;
   esac
