@@ -14,6 +14,7 @@ fi
 
 ansible_test ()
 {
+echo "INFO: You has successfully provisioned $(wc -l < ${OUTPUT_FILE}) servers"
 cd ${ANSIBLE_DIR}
 sudo ANSIBLE_HOST_KEY_CHECKING=False ansible all -m ping -i ${INVENTORY_FILE} -u ${USER} --private-key=${PRIVATE_KEY_FILE}
 }
