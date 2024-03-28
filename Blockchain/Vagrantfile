@@ -1,65 +1,69 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-BOX="ubuntu/focal64"
-SCRIPT_REPOSITORY = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/provision.sh"
-DOCKER = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Docker/provision.sh"
-NODEJS= "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/NodeJS/provision.sh"
-BLOCKCHAIN = "https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Blockchain/provision.sh"
-VAGRANT_PATH = "/vagrant_data"
-PROVIDER       = "virtualbox"
+BOX="ubuntu/jammy64"
+PROVISION_SCRIPT="https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Ansible/provision.sh"
+SCRIPT_FILE="provision.sh"
+TEST_SCRIPT=""
+TEST_SCRIPT_FILE="testAnsibleConnection.sh"
+# Shared folder configuration
+VAGRANT_PATH="/vagrant_data"
+# Provider configuration
+PROVIDER="virtualbox"
+# Network configuration
+IP="192.168.0"
+NETWORK="public_network"
+INTERFACE="Realtek Gaming GbE Family Controller"
+# Define ansible resources
+ANSIBLE_MEMORY="8192"
+ANSIBLE_CPU_COUNT="4"
 # Define master resources
-MASTER_MEMORY   = "8192"
-MASTER_CPU_COUNT = "4"
-MASTER_IP       = "192.168.0.30"
+MASTER_COUNT=1
+MASTER_MEMORY="8192"
+MASTER_CPU_COUNT="4"
 # Define node resources
-#NODE_01_IP       = "192.168.0.34"
-#NODE_MEMORY   = "8192"
-#NODE_CPU_COUNT = "4"
+NODE_COUNT=1
+NODE_MEMORY="8192"
+NODE_CPU_COUNT="4"
+# Define Vagrant configuration
 Vagrant.configure("2") do |config|
 	config.vm.box = BOX
-	boxes = [
-	  { :name => "master-01", :ip => MASTER_IP, :cpus => MASTER_CPU_COUNT, :memory => MASTER_MEMORY },
-	  #{ :name => "node-01", :ip => NODE_01_IP, :cpus => NODE_CPU_COUNT, :memory => NODE_MEMORY },
-	]
-	boxes.each do |opts|
-	  config.vm.define opts[:name] do |box|
-	    box.vm.synced_folder ".", VAGRANT_PATH
-	    box.vm.hostname = opts[:name]
-	    box.vm.network :public_network, ip: opts[:ip]
-	    box.vm.provider PROVIDER do |vb|
-	      vb.cpus = opts[:cpus]
-	      vb.memory = opts[:memory]
-	    end
-
-###############################################
-#########**LOCAL PROVISION SCRIPTS**###########
-###############################################
-
-	    box.vm.provision "shell", path: "../provision.sh" #Provisioner script
-	    box.vm.provision "shell", path: "../Docker/provision.sh" #Docker script
-	    box.vm.provision "shell", path: "../NodeJS/provision.sh" #NodeJS script
-	    if box.vm.hostname =~ /master/ then
-		box.vm.provision "shell", path: "./provision.sh" #Blockchain script
-		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
+	if MASTER_COUNT < 1 and NODE_COUNT < 1 then
+	  puts "MASTER_COUNT and NODE_COUNT must be greater than 0"
+	  exit 1
 	end
-	  if box.vm.hostname =~ /node/ then
-		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
-	end
+	boxes = []
+	boxes << { :name => "ansible", :ip => "#{IP}.10", :cpus => ANSIBLE_CPU_COUNT, :memory => ANSIBLE_MEMORY, :network => NETWORK, :bridge => INTERFACE }	
+	(1..MASTER_COUNT).each do |i|
+		boxes << { :name => "master-#{i}", :ip => "#{IP}.#{i+10}", :cpus => MASTER_CPU_COUNT, :memory => MASTER_MEMORY, :network => NETWORK, :bridge => INTERFACE }
+	      end
+	      (1..NODE_COUNT).each do |i|
+		boxes << { :name => "node-#{i}", :ip => "#{IP}.#{i+20}", :cpus => NODE_CPU_COUNT, :memory => NODE_MEMORY, :network => NETWORK, :bridge => INTERFACE }
+	      end
+	boxes.each_with_index do |opts, index|
+		config.vm.define opts[:name] do |box|
+			box.vm.synced_folder ".", VAGRANT_PATH
+			box.vm.hostname = opts[:name]
+			box.vm.network opts[:network], bridge: opts[:bridge], ip: opts[:ip]
+			box.vm.provider PROVIDER do |vb|
+				vb.cpus = opts[:cpus]
+				vb.memory = opts[:memory]
+			end
+			if [!File.exist?("#{VAGRANT_PATH}/#{SCRIPT_FILE}")] then
+			box.vm.provision "shell", inline: "curl -s #{PROVISION_SCRIPT} -o #{VAGRANT_PATH}/#{SCRIPT_FILE}"
+			end
+			box.vm.provision "shell", inline: "chmod +x #{VAGRANT_PATH}/#{SCRIPT_FILE}"			
+			box.vm.provision "shell", inline: "cd #{VAGRANT_PATH} && ./#{SCRIPT_FILE}"
 
-###############################################
-#######**REMOTE PROVISION SCRIPTS**############
-###############################################
-#
-#           box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh" #Provisioner script
-#	    box.vm.provision "shell", inline: "curl -sSLf #{DOCKER} | sudo sh" #Docker script
-#	    box.vm.provision "shell", inline: "curl -sSLf #{NODEJS} | sudo sh" #NodeJS script
-#	    if box.vm.hostname =~ /master/ then
-#		box.vm.provision "shell", inline: "curl -sSLf #{BLOCKCHAIN} | sudo sh" #Blockchain script
-#		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
-#	end
-#  if box.vm.hostname =~ /node/ then
-#		box.vm.provision "shell", inline: "echo 'provisioning' #{box.vm.hostname} ... done"
-#	end
-end
-end
+			if index == boxes.length - 1 then
+			box.vm.provision "shell", run: "always", inline: <<-SHELL
+        		if [ ! -f #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE} ]; then
+			curl -s #{TEST_SCRIPT} -o #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE}
+			chmod +x #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE}
+			fi
+			echo " INFO: You can now ssh into the ansible box with: [ vagrant ssh ansible " ]
+			echo " INFO: You can check the ansible connection with: [ vagrant ssh ansible -c 'cd #{VAGRANT_PATH} && ./#{TEST_SCRIPT_FILE}' ]"
+			SHELL
+			end
+		end
+	end
 end

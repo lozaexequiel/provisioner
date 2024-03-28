@@ -14,16 +14,16 @@ IP="192.168.0"
 NETWORK="public_network"
 INTERFACE="Realtek Gaming GbE Family Controller"
 # Define ansible resources
-ANSIBLE_MEMORY="8192"
-ANSIBLE_CPU_COUNT="4"
+ANSIBLE_MEMORY="4096"
+ANSIBLE_CPU_COUNT="2"
 # Define master resources
 MASTER_COUNT=1
-MASTER_MEMORY="8192"
-MASTER_CPU_COUNT="4"
+MASTER_MEMORY="4096"
+MASTER_CPU_COUNT="2"
 # Define node resources
-NODE_COUNT=0
-NODE_MEMORY="8192"
-NODE_CPU_COUNT="4"
+NODE_COUNT=1
+NODE_MEMORY="4096"
+NODE_CPU_COUNT="2"
 # Define Vagrant configuration
 Vagrant.configure("2") do |config|
 	config.vm.box = BOX
@@ -53,15 +53,14 @@ Vagrant.configure("2") do |config|
 			end
 			box.vm.provision "shell", inline: "chmod +x #{VAGRANT_PATH}/#{SCRIPT_FILE}"			
 			box.vm.provision "shell", inline: "cd #{VAGRANT_PATH} && ./#{SCRIPT_FILE}"
-
 			if index == boxes.length - 1 then
 			box.vm.provision "shell", run: "always", inline: <<-SHELL
         		if [ ! -f #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE} ]; then
 			curl -s #{TEST_SCRIPT} -o #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE}
 			chmod +x #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE}
 			fi
-			echo " INFO: You can now ssh into the ansible box with: [ vagrant ssh ansible " ]
-			echo " INFO: You can check the ansible connection with: [ vagrant ssh ansible -c 'cd #{VAGRANT_PATH} && ./#{TEST_SCRIPT_FILE}' ]"
+			echo "INFO: You can now ssh into the ansible box with: [ vagrant ssh ansible " ]"
+			echo "INFO: You can check the ansible connection with: [ vagrant ssh ansible -c 'cd #{VAGRANT_PATH} && ./#{TEST_SCRIPT_FILE}' ]"
 			SHELL
 			end
 		end
