@@ -1,5 +1,5 @@
 ---
-- hosts: node
+- hosts: master
   vars:
     mosquitto_config_file: /etc/mosquitto/conf.d/mosquitto.conf
     mosquitto_retention_period: 120
@@ -20,6 +20,7 @@
         - name: Import Mosquitto Configuration
           copy:
             content: |
+              port 1883
               persistence true
               autosave_interval 1800
               persistence_file mosquitto.db
@@ -38,4 +39,11 @@
             name: mosquitto
             state: restarted
       become: true
-...
+    - name: Check Mosquitto status
+      service_facts:
+      register: service_facts
+    
+    - name: Show Mosquitto status
+      debug:
+        msg: "Mosquitto is running"
+      when: "'mosquitto' in service_facts.ansible_facts.services and service_facts.ansible_facts.services['mosquitto'].state == 'running'"
