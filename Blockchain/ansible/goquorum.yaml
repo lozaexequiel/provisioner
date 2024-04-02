@@ -1,0 +1,32 @@
+---
+- hosts: blockchain
+  connection: remote_user
+  gather_facts: true
+  become: true
+  become_method: sudo
+  become_user: root
+  force_handlers: True
+
+  roles:
+    - role: consensys.goquorum
+      vars:
+        goquorum_version: v22.7.1
+        goquorum_consensus_algorithm: ${CONSENSUS_ALGORITHM}
+        goquorum_genesis_path: ${GENESIS_PATH}
+        goquorum_http_enabled: true
+        goquorum_http_host: 127.0.0.1
+        goquorum_http_port: 8545
+        goquorum_http_api:
+          [
+            "admin",
+            "db",
+            "eth",
+            "debug",
+            "miner",
+            "net",
+            "web3",
+            "quorum",
+            "qbft",
+          ]
+        goquorum_http_cors_origins: ["all"]
+        goquorum_http_virtual_hosts: ["all"]

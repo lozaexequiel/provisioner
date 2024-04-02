@@ -1,0 +1,8 @@
+---
+roles:
+  - src: consensys.goquorum
+    version: 0.1.0
+  - src: undergreen.prometheus-node-exporter
+    version: v1.4.0
+  - src: undergreen.prometheus-exporters-common
+    version: v1.2.0
