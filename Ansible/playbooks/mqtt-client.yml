@@ -10,4 +10,4 @@
         state: present
 
     - name: Publish message to MQTT topic
-      shell: "mosquitto_pub -h '{{ mqtt_broker_ip }}' -t 'test' -m 'Hello from Ansible!'"
+      shell: "mosquitto_pub -h '{{ mqtt_broker_ip }}' -t 'test' -m 'Hello from client!'"
