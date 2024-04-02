@@ -13,6 +13,7 @@ The virtual machine is created using [Vagrant](https://www.vagrantup.com/) and [
 	- [Vagrantfile](#vagrantfile)
 	- [Install](#install)
 		- [Global Variables](#global-variables)
+		- [Vagrantfile variables](#vagrantfile-variables)
 		- [Access the shared folder](#access-the-shared-folder)
 		- [Attention](#attention)
 		- [Errors](#errors)
@@ -58,7 +59,7 @@ This project contains the following tools for provisioning:
 
 ## Vagrantfile
 
-Each vagrantfile will download the provisioning scripts from this repository. The provisioning scripts will install the selected software on the virtual machine. The provisioning scripts are written in [bash](https://www.gnu.org/software/bash/).
+Each vagrantfile will download the provisioning scripts from this repository. The provisioning scripts will install the selected software on the virtual machine and the shared folder will be mounted in the virtual machine as `/vagrant_data`.
 
 ## Install
 
@@ -97,6 +98,17 @@ After running the command, the tools will be installed in the virtual machine.
 You can access the virtual machine by running the following command:
 
 ```vagrant ssh <VM_NAME>```
+
+### Vagrantfile variables
+
+The Vagrantfile contains the following variables than you may need to change to execute the provisioning scripts correctly.
+
+INTERFACE = "enp0s8" # This must be the same as the host-only network interface.
+
+| Variable name | Description | Default value |
+| --- | --- | --- |
+| INTERFACE | Network interface | enp0s8 |
+
 
 ### Access the shared folder
 
