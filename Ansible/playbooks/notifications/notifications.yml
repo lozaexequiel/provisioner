@@ -1,0 +1,26 @@
+---
+- name: Send notifications to Slack
+  uri:
+    url: "{{ slack_token }}"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body: 
+      text: "The service {{ service_name }} has restarted on {{ ansible_hostname }} IP {{ ansible_all_ipv4_addresses[1] }}"
+    body_format: json
+    status_code: [200, 204]
+
+- name: Send notification to Discord
+  uri:
+    url: "{{ discord_webhook }}"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body: 
+      content: "The service {{ service_name }} has restarted on {{ ansible_hostname }} IP {{ ansible_all_ipv4_addresses[1] }}"
+    body_format: json
+    status_code: [200, 204]
+
+- name: Debug
+  debug:
+    msg: "Result: {{ result }}, Notifications: {{ notifications }}, Slack token: {{ slack_token }}, Discord webhook: {{ discord_webhook }}"
