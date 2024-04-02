@@ -1,0 +1,52 @@
+---
+- hosts: master
+  vars_files:
+    - /vagrant_data/.env/.ansible/.env.yml
+
+  handlers:
+    - name: Send notifications
+      include_tasks: "{{ notifications }}"
+      vars:
+        service_name: "{{ notified_service }}"
+      listen: "Send notifications"
+
+  tasks:
+    - name: Install services
+      apt:
+        name: "{{ item }}"
+        state: present
+      become: true
+      loop: "{{ services_name }}"
+
+    - name: Set service name for Mosquitto
+      set_fact:
+        notified_service: "Mosquitto"
+
+    - name: Configure Mosquitto
+      copy:
+        content: |
+          listener 1883 {{ mqtt_broker_ip }}
+          persistence true
+          autosave_interval 1800
+          persistence_file mosquitto.db
+          connection_messages true
+          log_timestamp true
+          allow_anonymous true
+          autosave_on_changes true
+          message_size_limit 0
+          retained_persistence true
+          autosave_interval {{ mosquitto_retention_period }}
+        dest: "{{ mosquitto_config_file }}"
+      become: true
+      notify: "Send notifications"
+
+    - name: Set service name for Mosquitto restart
+      set_fact:
+        notified_service: "Mosquitto"
+
+    - name: Restart Mosquitto
+      systemd:
+        name: mosquitto
+        state: restarted
+      become: true
+      notify: "Send notifications"
