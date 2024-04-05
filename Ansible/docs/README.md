@@ -25,7 +25,7 @@ To use this project you need to have the following software installed:
 
 The basic structure of the project is as follows:
 
-![Architecture](./images/arc.svg)
+![Architecture](./images/ansible-architecture.svg)
 
 The files and directories are:
 

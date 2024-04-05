@@ -99,16 +99,9 @@ You can access the virtual machine by running the following command:
 
 ```vagrant ssh <VM_NAME>```
 
-### Vagrantfile variables
+### [Vagrantfile variables](./docs/Vagrantfile-variables.md)
 
-The Vagrantfile contains the following variables than you may need to change to execute the provisioning scripts correctly.
-
-INTERFACE = "enp0s8" # This must be the same as the host-only network interface.
-
-| Variable name | Description | Default value |
-| --- | --- | --- |
-| INTERFACE | Network interface | enp0s8 |
-
+The list of variables used in the Vagrantfile can be found in the docs folder. Please read the [Vagrantfile variables](./docs/Vagrantfile-variables.md) for more information.
 
 ### Access the shared folder
 

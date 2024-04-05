@@ -1,0 +1,45 @@
+---
+- name: Configure MQTT with Mosquitto and AWS IoT Core
+  hosts: mosquitto-broker
+  gather_facts: false
+
+  vars_files:
+    - /vagrant_data/.env/.ansible/.env.yml
+  handlers:
+    - name: Send notifications
+      include_tasks: "{{ notifications }}"
+      vars:
+        service_name: "{{ notified_service }}"
+      listen: "Send notifications"
+
+  tasks:
+    - name: Install Mosquitto broker
+      apt:
+        name: mosquitto
+        state: present
+
+    - name: Start Mosquitto service
+      service:
+        name: mosquitto
+        state: started
+        enabled: true
+
+    - name: Configure AWS IoT Core
+      aws_iot:
+        endpoint: {{ iot_core_endpoint }}
+        region: {{ iot_core_region }}
+        certificate_path: {{ iot_core_certificate_path }}
+        private_key_path: {{ iot_core_private_key_path }}
+        ca_cert_path: {{ iot_core_ca_cert_path }}
+        state: present
+
+    - name: Enable Mosquitto persistence
+      blockinfile:
+        path: /etc/mosquitto/mosquitto.conf
+        block: |
+          persistence true
+          persistence_location /var/lib/mosquitto/
+          persistence_file mosquitto.db
+          autosave_interval 1800        
+        state: present        
+      notify: "Send notifications"

@@ -129,5 +129,10 @@ ansible_create_vars ()
       echo "ansible_ssh_private_key_file: ${PRIVATE_KEY_FILE}" >> ${PLAYBOOK_VARS}
       echo "INFO: PLAYBOOK_VARS file created, you can find the file in ${ANSIBLE_PATH}"
     fi
+    ;;
+    *)
+    ;;
+  esac
+}
 
 provision
