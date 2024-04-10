@@ -34,28 +34,42 @@ ${TEST_COMMAND}
 }
 
 ansible_ssh_key ()
-{
+{  
   case $(hostname) in
     *ansible*)
+    if [ -f ${REMOTE_PRIVATE_KEY_FILE} ]; then
+    echo "INFO: The private key already exists in the remote path"
+    else
+    echo "INFO: The private key does not exist in the remote path, creating a new one"    
     if [ ! -f ${PRIVATE_KEY_FILE} ]; then
       mkdir -p ${SSH_DIR}      
       cd ${SSH_DIR}
-      echo "User: ${USER}"
       ssh-keygen -t rsa -b 4096 -C "${USER}@${hostname}" -f ${PRIVATE_KEY_FILE} -N ""
       chown -R ${USER}:${USER} ${SSH_DIR}
       eval "$(ssh-agent -s)"
       ssh-add ${PRIVATE_KEY_FILE}
       mkdir -p $(dirname ${REMOTE_PUBLIC_KEY_FILE})
-      cp ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}
-      echo "INFO: The public key has been copied to the remote server"
+      cp -f ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}
+      echo "INFO: The public key has been copied to the remote path"
+      cp -f ${PRIVATE_KEY_FILE} ${REMOTE_PRIVATE_KEY_FILE}
+      echo "INFO: The private key has been copied to the remote path"      
     else
-      echo "INFO: A private key already exists"
+      echo "INFO: The private key already exists in the local path"
+      cp -f ${PRIVATE_KEY_FILE} ${REMOTE_PRIVATE_KEY_FILE}
+      echo "INFO: The private key has been copied to the remote path"
+      if [ -f ${PUBLIC_KEY_FILE} ]; then
+        cp ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}
+        echo "INFO: The public key has been copied to the remote path"
+      fi
+
+    fi
     fi
     ;;
     *)
     cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
     ;;
   esac
+  fi
 }
 
 ansible_config ()
@@ -79,6 +93,7 @@ ansible_config ()
     fi
     ;;
     *)
+    echo "INFO: no actions for this host"
     ;;
   esac
 }
@@ -131,6 +146,7 @@ ansible_create_vars ()
     fi
     ;;
     *)
+    echo "INFO: no actions for this host"
     ;;
   esac
 }
