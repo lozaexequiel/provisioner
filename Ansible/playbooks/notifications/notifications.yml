@@ -20,7 +20,3 @@
       content: "The service {{ service_name }} has restarted on {{ ansible_hostname }} IP {{ ansible_all_ipv4_addresses[1] }}"
     body_format: json
     status_code: [200, 204]
-
-- name: Debug
-  debug:
-    msg: "Result: {{ result }}, Notifications: {{ notifications }}, Slack token: {{ slack_token }}, Discord webhook: {{ discord_webhook }}"

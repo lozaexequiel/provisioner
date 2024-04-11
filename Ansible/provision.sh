@@ -67,9 +67,9 @@ ansible_ssh_key ()
     ;;
     *)
     cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
+    echo "INFO: Configured with the public key of the ansible server"
     ;;
   esac
-  fi
 }
 
 ansible_config ()
