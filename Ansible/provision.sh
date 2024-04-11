@@ -61,7 +61,9 @@ ansible_ssh_key ()
         cp ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}
         echo "INFO: The public key has been copied to the remote path"
       fi
-      ;;
+    fi
+    fi
+    ;;
       *)
       cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
       echo "INFO: Configured with the public key of the ansible server"
