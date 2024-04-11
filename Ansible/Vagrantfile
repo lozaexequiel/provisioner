@@ -49,23 +49,23 @@ Vagrant.configure("2") do |config|
 				vb.memory = opts[:memory]
 			end
 			box.vm.provision "shell", inline: <<-SHELL
-			if [ ! -f #{VAGRANT_PATH}/#{SCRIPT_FILE} ]; then
-			echo "ERROR: #{SCRIPT_FILE} not found, trying to download it from the repository"
-			curl -s #{PROVISION_SCRIPT} -o #{VAGRANT_PATH}/#{SCRIPT_FILE}
-			chmod +x #{VAGRANT_PATH}/#{SCRIPT_FILE}
-			fi			
-			cd #{VAGRANT_PATH} && ./#{SCRIPT_FILE}
-			SHELL		
-			if true index == boxes.length - 1 then
-				box.vm.provision "shell", inline: <<-SHELL
-				if [ ! -f #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE} ]; then
-				echo "ERROR: #{TEST_SCRIPT_FILE} not found, trying to download it from the repository"
-				curl -s #{TEST_SCRIPT} -o #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE} && chmod +x #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE}
+				if [ ! -f #{VAGRANT_PATH}/#{SCRIPT_FILE} ]; then
+					echo "ERROR: #{SCRIPT_FILE} not found, trying to download it from the repository"
+					curl -s #{PROVISION_SCRIPT} -o #{VAGRANT_PATH}/#{SCRIPT_FILE}
+					chmod +x #{VAGRANT_PATH}/#{SCRIPT_FILE}
 				fi
-				echo "INFO: You can now ssh into the ansible box with: [ vagrant ssh ansible " ]"
-				echo "INFO: You can check the ansible connection with: [ vagrant ssh ansible -c 'cd #{VAGRANT_PATH} && ./#{TEST_SCRIPT_FILE}' ]"
+				cd #{VAGRANT_PATH} && ./#{SCRIPT_FILE}
+			SHELL
+			if index == boxes.length - 1 then
+				box.vm.provision "shell", inline: <<-SHELL
+					if [ ! -f #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE} ]; then
+						echo "ERROR: #{TEST_SCRIPT_FILE} not found, trying to download it from the repository"
+						curl -s #{TEST_SCRIPT} -o #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE} && chmod +x #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE}
+					fi
+					echo "INFO: You can now ssh into the ansible box with: [ vagrant ssh ansible ]"
+					echo "INFO: You can check the ansible connection with: [ vagrant ssh ansible -c 'cd #{VAGRANT_PATH} && ./#{TEST_SCRIPT_FILE}' ]"
 				SHELL
-			
+			end
 		end
 	end
 end
