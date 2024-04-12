@@ -35,7 +35,6 @@ echo "INFO: Looking for the example file in the main repository"
 curl -s ${EXAMPLE_REMOTE_FILE} -o ${EXAMPLE_LOCAL_FILE}
 fi
 fi
-fi
 . /vagrant_data/.env/.env
 set +a
 }
