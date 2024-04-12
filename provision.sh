@@ -20,10 +20,7 @@ variables ()
 	# Define the directory and file paths
 	env_dir="/vagrant_data/.env"
 	env_file="${env_dir}/.env"
-	example_file="/vagrant_data/example/.env.example"
-
-	# Define the remote example file
-	EXAMPLE_REMOTE_FILE=${EXAMPLE_REMOTE_FILE}
+	example_file="/vagrant_data/example/.env.example"	
 
 	# Check if .env directory exists
 	if [ ! -d "${env_dir}" ]; then
@@ -45,7 +42,7 @@ variables ()
 			cp "${example_file}" "${env_file}"
 		else
 			echo "INFO: Example file not detected. Downloading from remote location"
-			curl -L ${EXAMPLE_REMOTE_FILE} -o ${env_file}
+			curl -sL ${EXAMPLE_REMOTE_FILE} -o ${env_file}
 			if [ $? -eq 0 ]; then
 				echo "INFO: Successfully downloaded the example file"								
 			else

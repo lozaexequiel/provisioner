@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
 	      vb.memory = opts[:memory]
 	    end
 	  if box.vm.hostname =~ /master/ then
-	    box.vm.provision "shell", inline: "curl -sSLf #{SCRIPT_REPOSITORY} | sudo sh"
+	    box.vm.provision "shell", path: SCRIPT_REPOSITORY
 	    box.vm.provision "shell", path: DOCKER
 	    box.vm.provision "shell", path: NORDVPN
 	    box.vm.provision "shell", path: NGINX
