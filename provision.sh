@@ -43,8 +43,9 @@ variables ()
 		else
 			echo "INFO: Example file not detected. Downloading from remote location"
 			curl -sL ${EXAMPLE_REMOTE_FILE} -o ${env_file}
-			if [ $? -eq 0 ]; then
-				echo "INFO: Successfully downloaded the example file"								
+			if [ -s "${env_file}" ]; then
+				echo "INFO: Example file downloaded successfully"
+			
 			else
 				echo "ERROR: ${EXAMPLE_REMOTE_FILE} does not exist or failed to download"
 				echo "ERROR: Failed to download the example file. Please check the URL or your network connection"				
