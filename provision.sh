@@ -45,7 +45,7 @@ variables ()
 			cp "${example_file}" "${env_file}"
 		else
 			echo "INFO: Example file not detected. Downloading from remote location"
-			curl -s "${EXAMPLE_REMOTE_FILE}" -o "${env_file}"
+			curl -s ${EXAMPLE_REMOTE_FILE} -o ${env_file}
 			if [ $? -eq 0 ]; then
 				echo "INFO: Successfully downloaded the example file"								
 			else
