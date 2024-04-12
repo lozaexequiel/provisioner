@@ -32,7 +32,7 @@ cp /vagrant_data/example/.env.example /vagrant_data/.env/.env
 else
 echo "WARNING: The .env file does not exist, is not detected, or the file is empty"
 echo "INFO: Looking for the example file in the main repository"
-git clone ${EXAMPLE_GIT_REPOSITORY} ${EXAMPLE_PATH_DEST}
+git clone ${EXAMPLE_GIT_REPO} ${EXAMPLE_PATH_DEST}
 fi
 fi
 . /vagrant_data/.env/.env
