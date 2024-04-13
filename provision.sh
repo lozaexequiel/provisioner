@@ -21,7 +21,7 @@ variables ()
 	env_dir="/vagrant_data/.env"
 	env_file="${env_dir}/.env"
 	example_file="/vagrant_data/example/.env.example"	
-	EXAMPLE_REMOTE_FILE="https://github.com/lozaexequiel/provisioner/blob/main/Ansible/example/.env.example"
+	EXAMPLE_REMOTE_FILE="https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Ansible/example/.env.example"
 
 	# Check if .env directory exists
 	if [ ! -d "${env_dir}" ]; then
@@ -43,7 +43,7 @@ variables ()
 			cp "${example_file}" "${env_file}"
 		else
 			echo "INFO: Example file not detected. Downloading from remote location"
-			curl -s ${EXAMPLE_REMOTE_FILE} -o ${env_file}
+			curl -L ${EXAMPLE_REMOTE_FILE} -o ${env_file}
 			if [ -s "${env_file}" ]; then
 				echo "INFO: Example file downloaded successfully"
 				source "${env_file}"			
