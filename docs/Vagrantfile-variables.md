@@ -21,7 +21,7 @@ Please note that the variables can be modified in the `Vagrantfile`.
 | TEST_SCRIPT_FILE | Test script file. | testAnsibleConnection.sh |
 | TEST_SCRIPT | Test script URL. | [Test script](https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Ansible/testAnsibleConnection.sh) |
 | PROVISION_SCRIPT | Provision script URL. | [Provision script](https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Ansible/provision.sh) |
-| BOX | SO image to use. | ubuntu/focal64 |
+| BOX | SO image to use. | ubuntu/jammy64 |
 | VAGRANT_PATH | Host shared folder mounted in /vagrant_path. | /vagrant_data |
 
 ## [Go Back](../README.md)

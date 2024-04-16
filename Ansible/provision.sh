@@ -35,21 +35,22 @@ ${TEST_COMMAND}
 
 # Function to create ansible ssh key
 ansible_ssh_key ()
-{  
+{
   # Remote private key file check
   if [ -f ${REMOTE_PRIVATE_KEY_FILE} ]; then
     echo "INFO: Ansible provisioned with custom private key"
-  else    
+    cp -f ${REMOTE_PRIVATE_KEY_FILE} ${PRIVATE_KEY_FILE}
+  else
     case $(hostname) in
-      *ansible*)        
+      *ansible*)
         # Check if the local private key file already exists
-        if [ ! -f ${PRIVATE_KEY_FILE} ]; then          
-          create_ssh_key          
+        if [ ! -f ${PRIVATE_KEY_FILE} ]; then
+          create_ssh_key
         else
-          echo "INFO: The private key already exists in the local path"          
+          echo "INFO: The private key already exists in the local path"
         fi
         # Copy the private key file to the remote path
-        cp -f ${PRIVATE_KEY_FILE} ${REMOTE_PRIVATE_KEY_FILE}        
+        cp -f ${PRIVATE_KEY_FILE} ${REMOTE_PRIVATE_KEY_FILE}
         echo "INFO: The private key has been copied to the remote path"
         # Check if the remote public key file already exists
         if [ ! -f ${REMOTE_PUBLIC_KEY_FILE} ]; then
@@ -66,11 +67,11 @@ ansible_ssh_key ()
           echo "INFO: Configured with the public key of the ansible server"
         else
           echo "WARNING: The public key file does not exist in the remote path"
-          echo "WARNING: This could affect the connection between the ansible server and this host"          
+          echo "WARNING: This could affect the connection between the ansible server and this host"
         fi
       ;;
-    esac    
-  fi  
+    esac
+  fi
 }
 
 # Function to configure Ansible
