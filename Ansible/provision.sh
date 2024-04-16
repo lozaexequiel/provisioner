@@ -33,52 +33,59 @@ fi
 ${TEST_COMMAND}
 }
 
+# Function to create ansible ssh key
 ansible_ssh_key ()
 {  
+  # Remote private key file check
+  if [ -f ${REMOTE_PRIVATE_KEY_FILE} ]; then
+    echo "INFO: Ansible provisioned with custom private key"
+  else    
+    case $(hostname) in
+      *ansible*)        
+        # Check if the local private key file already exists
+        if [ ! -f ${PRIVATE_KEY_FILE} ]; then          
+          create_ssh_key          
+        else
+          echo "INFO: The private key already exists in the local path"          
+        fi
+        # Copy the private key file to the remote path
+        cp -f ${PRIVATE_KEY_FILE} ${REMOTE_PRIVATE_KEY_FILE}        
+        echo "INFO: The private key has been copied to the remote path"
+        # Check if the remote public key file already exists
+        if [ ! -f ${REMOTE_PUBLIC_KEY_FILE} ]; then
+          # Create the public key file
+          ssh-keygen -y -f ${REMOTE_PRIVATE_KEY_FILE} > ${REMOTE_PUBLIC_KEY_FILE}
+          echo "INFO: The public key has been created in the remote path"
+        fi
+      ;;
+      *)
+        # Check if the remote public key file already exists
+        if [ -f ${REMOTE_PUBLIC_KEY_FILE} ]; then
+          # Append the remote public key to the authorized keys
+          cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
+          echo "INFO: Configured with the public key of the ansible server"
+        else
+          echo "WARNING: The public key file does not exist in the remote path"
+          echo "WARNING: This could affect the connection between the ansible server and this host"          
+        fi
+      ;;
+    esac    
+  fi  
+}
+
+# Function to configure Ansible
+ansible_config ()
+{
+  # Check if the hostname includes "ansible"
   case $(hostname) in
     *ansible*)
-    if [ -f ${REMOTE_PRIVATE_KEY_FILE} ]; then
-    echo "INFO: The private key already exists in the remote path"
-    else
-    echo "INFO: The private key does not exist in the remote path, creating a new one"    
-    if [ ! -f ${PRIVATE_KEY_FILE} ]; then
-      mkdir -p ${SSH_DIR}      
-      cd ${SSH_DIR}
-      ssh-keygen -t rsa -b 4096 -C "${USER}@${hostname}" -f ${PRIVATE_KEY_FILE} -N ""
-      chown -R ${USER}:${USER} ${SSH_DIR}
-      eval "$(ssh-agent -s)"
-      ssh-add ${PRIVATE_KEY_FILE}
-      mkdir -p $(dirname ${REMOTE_PUBLIC_KEY_FILE})
-      cp -f ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}
-      echo "INFO: The public key has been copied to the remote path"
-      cp -f ${PRIVATE_KEY_FILE} ${REMOTE_PRIVATE_KEY_FILE}
-      echo "INFO: The private key has been copied to the remote path"      
-      else
-      echo "INFO: The private key already exists in the local path"
-      cp -f ${PRIVATE_KEY_FILE} ${REMOTE_PRIVATE_KEY_FILE}
-      echo "INFO: The private key has been copied to the remote path"
-      if [ -f ${PUBLIC_KEY_FILE} ]; then
-        cp ${PUBLIC_KEY_FILE} ${REMOTE_PUBLIC_KEY_FILE}
-        echo "INFO: The public key has been copied to the remote path"
-      fi
-    fi
-    fi
-    ;;
-      *)
-      cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
-      echo "INFO: Configured with the public key of the ansible server"
-      ;;
-      esac
-      }
-
-      ansible_config ()
-      {
-      case $(hostname) in
-      *ansible*)
+      # Check if the Ansible configuration file already exists
       if [ -f ${ANSIBLE_CONFIG} ]; then
+        # Copy the existing configuration file
         cp ${ANSIBLE_CONFIG} ${ANSIBLE_DIR}/ansible.cfg
         echo "INFO: The ansible.cfg file already exists, you can find the file in ${ANSIBLE_PATH}"
       else
+        # Create a new configuration file
         echo "INFO: The ansible.cfg file does not exist, creating a new one"
         echo "[defaults]" > ${ANSIBLE_DIR}/ansible.cfg
         echo "inventory = ${INVENTORY_FILE}" >> ${ANSIBLE_DIR}/ansible.cfg
@@ -87,11 +94,12 @@ ansible_ssh_key ()
         echo "remote_tmp = ${REMOTE_TMP}" >> ${ANSIBLE_DIR}/ansible.cfg
         echo "become_user = ${BECOME_USER}" >> ${ANSIBLE_DIR}/ansible.cfg
         echo "roles_path = ${ROLES_PATH}" >> ${ANSIBLE_DIR}/ansible.cfg
+        # Copy the new configuration file to the Ansible path
         cp ${ANSIBLE_DIR}/ansible.cfg ${ANSIBLE_PATH}
         echo "INFO: ansible.cfg file created, you can find the file in ${ANSIBLE_PATH}"
       fi
       ;;
-      esac
+  esac
 }
 
 ansible_inventory ()
