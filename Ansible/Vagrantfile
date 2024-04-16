@@ -59,7 +59,7 @@ Vagrant.configure("2") do |config|
 			if index == boxes.length - 1 then
 				box.vm.provision "shell", inline: <<-SHELL
 					if [ ! -f #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE} ]; then
-						echo "ERROR: #{TEST_SCRIPT_FILE} not found, trying to download it from the repository"
+						echo "WARNING: #{TEST_SCRIPT_FILE} not found, trying to download it from the repository"
 						curl -s #{TEST_SCRIPT} -o #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE} && chmod +x #{VAGRANT_PATH}/#{TEST_SCRIPT_FILE}
 					fi
 					echo "INFO: You can now ssh into the ansible box with: [ vagrant ssh ansible ]"
