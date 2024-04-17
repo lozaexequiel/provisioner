@@ -44,7 +44,7 @@ The files and directories are:
 
 ## Variables
 
-### [Global Variables](../../README.md#global-variables)
+### [Global Variables](../../docs/README.md#global-variables)
 
 Common variables for all provisioners.
 

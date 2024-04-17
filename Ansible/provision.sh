@@ -81,8 +81,16 @@ ansible_ssh_key ()
         fi
       ;;
       *)
-        # No actions for this host
-        echo "INFO: No actions for this host"
+        if [ -f ${REMOTE_PUBLIC_KEY_FILE} ]; then
+          # Check if the public key is in the authorized_keys file
+          if ! grep -q "$(cat ${REMOTE_PUBLIC_KEY_FILE})" ${SSH_DIR}/authorized_keys; then
+            # Add the public key to the authorized_keys file
+            cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
+            echo "INFO: The public key has been added to the authorized_keys file"
+          fi
+        else
+          echo "WARNING: The public key file does not exist in the remote path"
+        fi
       ;;
     esac
   fi

@@ -45,7 +45,7 @@ The `vagrant_data` directory is mounted in the virtual machine as `/vagrant_data
 
 This project contains the following tools for provisioning:
 
-- [Ansible](./Ansible/README.md)
+- [Ansible](./Ansible/docs/README.md)
 - [AWS CLI](./AWS_CLI/README.md)
 - [Blockchain](./Blockchain/README.md)
 - [Docker](./Docker/README.md)
