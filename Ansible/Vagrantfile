@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
 			end
 			box.vm.provision "shell", inline: <<-SHELL
 				if [ ! -f #{VAGRANT_PATH}/#{SCRIPT_FILE} ]; then
-					echo "ERROR: #{SCRIPT_FILE} not found, trying to download it from the repository"
+					echo "WARNING: #{SCRIPT_FILE} not found, trying to download it from the repository"
 					curl -s #{PROVISION_SCRIPT} -o #{VAGRANT_PATH}/#{SCRIPT_FILE}
 					chmod +x #{VAGRANT_PATH}/#{SCRIPT_FILE}
 				fi
