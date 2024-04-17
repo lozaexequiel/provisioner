@@ -44,7 +44,17 @@ ansible_ssh_key ()
   # Remote private key file check
   if [ -f ${REMOTE_PRIVATE_KEY_FILE} ]; then
     echo "INFO: Ansible provisioned with custom private key"
-    cp -f ${REMOTE_PRIVATE_KEY_FILE} ${PRIVATE_KEY_FILE}
+    case $(hostname) in
+      *ansible*)
+        # Copy the remote private key file to the local path
+        cp -f ${REMOTE_PRIVATE_KEY_FILE} ${PRIVATE_KEY_FILE}
+        echo "INFO: The private key has been copied to the local path"
+      ;;
+      *)
+        # No actions for this host
+        echo "INFO: No actions for this host"
+      ;;
+    esac
   else
     case $(hostname) in
       *ansible*)
@@ -63,17 +73,16 @@ ansible_ssh_key ()
           ssh-keygen -y -f ${REMOTE_PRIVATE_KEY_FILE} > ${REMOTE_PUBLIC_KEY_FILE}
           echo "INFO: The public key has been created in the remote path"
         fi
+        # Check if the public key is in the authorized_keys file
+        if ! grep -q "$(cat ${REMOTE_PUBLIC_KEY_FILE})" ${SSH_DIR}/authorized_keys; then
+          # Add the public key to the authorized_keys file
+          cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
+          echo "INFO: The public key has been added to the authorized_keys file"
+        fi
       ;;
       *)
-        # Check if the remote public key file already exists
-        if [ -f ${REMOTE_PUBLIC_KEY_FILE} ]; then
-          # Append the remote public key to the authorized keys
-          cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
-          echo "INFO: Configured with the public key of the ansible server"
-        else
-          echo "WARNING: The public key file does not exist in the remote path"
-          echo "WARNING: This could affect the connection between the ansible server and this host"
-        fi
+        # No actions for this host
+        echo "INFO: No actions for this host"
       ;;
     esac
   fi
