@@ -36,6 +36,11 @@ ${TEST_COMMAND}
 # Function to create ansible ssh key
 ansible_ssh_key ()
 {
+  # Check if the ssh directory exists
+  if [ ! -d "$(dirname ${REMOTE_PUBLIC_KEY_FILE})" ]; then
+    mkdir -p "$(dirname ${REMOTE_PUBLIC_KEY_FILE})"
+  fi
+
   # Remote private key file check
   if [ -f ${REMOTE_PRIVATE_KEY_FILE} ]; then
     echo "INFO: Ansible provisioned with custom private key"
