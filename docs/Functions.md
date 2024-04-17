@@ -8,7 +8,7 @@ provision - This function is the main function that calls all the other function
 variables - This function sets the variables for the script.
 header - This function prints the header of the script.
 disable_swap - This function disables the swap.
-install_dependencies - This function installs the dependencies, packages to install with apt-get.
+install_dependencies - This function installs the dependencies, packages to install with apt-get for ubuntu.
 ansible_provision - This function installs ansible.
 ansible_ssh_key - This function creates the ssh key for ansible and register it in the authorized_keys server file.
 ansible_config - This function creates the ansible configuration file.

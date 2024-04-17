@@ -12,6 +12,7 @@ This directory contains the configuration files for Ansible provisioner.
 		- [Global Variables](#global-variables)
 		- [Ansible variables](#ansible-variables)
 		- [Ansible version](#ansible-version)
+	- [Functions](#functions)
 	- [Ansible documentation](#ansible-documentation)
 
 ## Prerequisites
@@ -68,6 +69,8 @@ If you want an specific version of Ansible you can change the following variable
 ```ANSIBLE_VERSION=<version>```
 
 Default playbooks path is `/vagrant_data/playbooks` but you can change it in the environment file.
+
+## [Functions](../../README.md#functions)
 
 ## Ansible documentation
 
