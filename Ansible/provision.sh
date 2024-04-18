@@ -60,7 +60,12 @@ ansible_ssh_key ()
             echo "INFO: The public key has been added to the authorized_keys file"
           fi
         else
-          echo "WARNING: The public key file does not exist in the remote path"
+          # Create the public key file
+          ssh-keygen -y -f ${REMOTE_PRIVATE_KEY_FILE} > ${REMOTE_PUBLIC_KEY_FILE}
+          echo "INFO: The public key has been created in the remote path"
+          # Add the public key to the authorized_keys file
+          cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys
+          echo "INFO: The public key has been added to the authorized_keys file"
         fi
       ;;
     esac
