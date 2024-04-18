@@ -15,6 +15,7 @@ ansible_config
 ansible_inventory
 permission_ssh_key
 ansible_create_vars
+ansible_collection_install
 clean_up
 }
 
@@ -176,6 +177,14 @@ ansible_create_vars ()
     echo "INFO: no actions for this host"
     ;;
   esac
+}
+
+ansible_collection_install ()
+{
+  if [ -n "${COLLECTIONS}" ]; then
+    echo "INFO: Installing Ansible collections"
+    ansible-galaxy collection install ${COLLECTIONS}
+  fi
 }
 
 provision
