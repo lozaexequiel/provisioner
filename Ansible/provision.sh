@@ -172,7 +172,7 @@ ansible_create_vars ()
       echo "INFO: The PLAYBOOK_VARS file already exists"
     else
       echo "INFO: The PLAYBOOK_VARS file does not exist, trying to download from remote location"
-      curl -s ${EXAMPLE_TOOL_FILE} -o ${PLAYBOOK_VARS}
+      curl -L ${EXAMPLE_TOOL_FILE} -o ${PLAYBOOK_VARS}
       if [ -f ${PLAYBOOK_VARS} ]; then
         echo "INFO: PLAYBOOK_VARS file downloaded successfully"
       else
