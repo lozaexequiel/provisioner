@@ -180,6 +180,7 @@ ansible_create_vars ()
         echo "ERROR: Failed to download the example file. Please check the URL or your network connection"
         exit 1
     fi
+    fi
     ;;
     *)
     echo "INFO: no actions for this host"
