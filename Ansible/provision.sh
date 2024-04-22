@@ -165,17 +165,20 @@ else
 }
 
 ansible_create_vars ()
-{
+{ 
   case $(hostname) in
     *ansible*)
     if [ -f ${PLAYBOOK_VARS} ]; then
       echo "INFO: The PLAYBOOK_VARS file already exists"
     else
-      echo "INFO: The PLAYBOOK_VARS file does not exist, creating a new one"
-      echo "---" > ${PLAYBOOK_VARS}
-      echo "ansible_user: ${USER}" >> ${PLAYBOOK_VARS}
-      echo "ansible_ssh_private_key_file: ${PRIVATE_KEY_FILE}" >> ${PLAYBOOK_VARS}
-      echo "INFO: PLAYBOOK_VARS file created, you can find the file in ${ANSIBLE_PATH}"
+      echo "INFO: The PLAYBOOK_VARS file does not exist, trying to download from remote location"
+      curl -s ${EXAMPLE_TOOL_FILE} -o ${PLAYBOOK_VARS}
+      if [ -f ${PLAYBOOK_VARS} ]; then
+        echo "INFO: PLAYBOOK_VARS file downloaded successfully"
+      else
+        echo "ERROR: ${EXAMPLE_TOOL_FILE} does not exist or failed to download"
+        echo "ERROR: Failed to download the example file. Please check the URL or your network connection"
+        exit 1
     fi
     ;;
     *)
