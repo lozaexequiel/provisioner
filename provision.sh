@@ -15,15 +15,16 @@ echo ""
 variables ()
 {
 set -a	# Enable automatic export of variables
+TOOL="Ansible"
 ipAddress=$(hostname -I | awk '{print $2}') # Get the second IP address because the first one is the localhost or the private IP address
 hostname=$(hostname)
 env_dir="${ENV_DIR:-/vagrant_data/.env}"
 env_file="${env_dir}/.env"
 example_file="${EXAMPLE_FILE:-/vagrant_data/example/.env.example}"
-EXAMPLE_REMOTE_FILE="${EXAMPLE_REMOTE_URL:-https://raw.githubusercontent.com/lozaexequiel/provisioner/main/Ansible/example/.env.example}"
+EXAMPLE_REMOTE_FILE="${EXAMPLE_REMOTE_URL:-https://raw.githubusercontent.com/lozaexequiel/provisioner/main/${TOOL}/example/.env.example}"
 log_file="/var/log/provision.log"
 
-    # Logging function
+# Logging function
 log() {
     echo "$(date) $1: $2" | tee -a "$log_file"
 }
