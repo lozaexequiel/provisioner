@@ -78,7 +78,6 @@ ansible_config ()
   esac
 }
 
-# Function to create Ansible inventory
 ansible_inventory ()
 {
     case $(hostname) in
@@ -106,18 +105,23 @@ ansible_inventory ()
       echo "$(date) INFO: INVENTORY_FILE file created, you can find the file in ${ANSIBLE_PATH}"
     fi
     ;;
-    *master*|*node*|*)
+    *master*)
+      group="master"
+      ;;
+    *node*)
+      group="node"
+      ;;
+    *)
       group="other"
-      [ "$(hostname)" = "*master*" ] && group="master"
-      [ "$(hostname)" = "*node*" ] && group="node"
-      temp_file=$(mktemp)
-      awk -v hostline="${hostname} ansible_host=${ipAddress} ansible_user=${USER} ansible_ssh_private_key_file=${PRIVATE_KEY_FILE}" '/\['"$group"'\]/ { print; print hostline; next }1' "${INVENTORY_FILE}" > "$temp_file" && mv "$temp_file" "${INVENTORY_FILE}" || {
-        echo "$(date) ERROR: Failed to update INVENTORY_FILE"
-        exit 1
-      }
-      echo "$(date) INFO: ${hostname} host added to the [$group] group"
       ;;
   esac
+
+  temp_file=$(mktemp)
+  awk -v hostline="${hostname} ansible_host=${ipAddress} ansible_user=${USER} ansible_ssh_private_key_file=${PRIVATE_KEY_FILE}" '/\['"$group"'\]/ { print; print hostline; next }1' "${INVENTORY_FILE}" > "$temp_file" && mv "$temp_file" "${INVENTORY_FILE}" || {
+    echo "$(date) ERROR: Failed to update INVENTORY_FILE"
+    exit 1
+  }
+  echo "$(date) INFO: ${hostname} host added to the [$group] group"
 }
 
 # Function to create Ansible variables
@@ -188,6 +192,8 @@ ansible_ssh_key ()
 private_key ()
 
 {
+  # Ensure the directory exists
+  mkdir -p $(dirname ${REMOTE_PRIVATE_KEY_FILE}) || { echo "$(date) ERROR: Failed to create directory for REMOTE_PRIVATE_KEY_FILE"; exit 1; }
     # Check if the remote private key file exists
   if [ -f ${REMOTE_PRIVATE_KEY_FILE} ]; then
     # Copy the remote private key file to the local path
@@ -211,6 +217,8 @@ private_key ()
 
 public_key ()
 {
+   # Ensure the directory exists
+  mkdir -p $(dirname ${REMOTE_PUBLIC_KEY_FILE}) || { echo "$(date) ERROR: Failed to create directory for REMOTE_PUBLIC_KEY_FILE"; exit 1; }
   if [ -f ${REMOTE_PUBLIC_KEY_FILE} ]; then
     if ! grep -q "$(cat ${REMOTE_PUBLIC_KEY_FILE})" ${SSH_DIR}/authorized_keys; then
       cat ${REMOTE_PUBLIC_KEY_FILE} >> ${SSH_DIR}/authorized_keys || { echo "$(date) ERROR: Failed to add public key to authorized_keys"; exit 1; }
