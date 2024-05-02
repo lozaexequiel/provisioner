@@ -27,10 +27,6 @@ NODE_CPU_COUNT="2"
 # Define Vagrant configuration
 Vagrant.configure("2") do |config|
 	config.vm.box = BOX
-	if MASTER_COUNT < 1 and NODE_COUNT < 1 then
-	  puts "MASTER_COUNT and NODE_COUNT must be greater than 0"
-	  exit 1
-	end
 	boxes = []
 	boxes << { :name => "ansible", :ip => "#{IP}.10", :cpus => ANSIBLE_CPU_COUNT, :memory => ANSIBLE_MEMORY, :network => NETWORK, :bridge => INTERFACE }	
 	(1..MASTER_COUNT).each do |i|
