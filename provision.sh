@@ -11,12 +11,11 @@ echo "#################################################"
 echo ""
 }
 
-# Function to set up environment variables
 variables ()
 {
-set -a	# Enable automatic export of variables
+set -a
 TOOL="Ansible"
-ipAddress=$(hostname -I | awk '{print $2}') # Get the second IP address because the first one is the localhost or the private IP address
+ipAddress=$(hostname -I | awk '{print $2}')
 hostname=$(hostname)
 env_dir="${ENV_DIR:-/vagrant_data/.env}"
 env_file="${env_dir}/.env"
@@ -24,30 +23,25 @@ example_file="${EXAMPLE_FILE:-/vagrant_data/example/.env.example}"
 EXAMPLE_REMOTE_FILE="${EXAMPLE_REMOTE_URL:-https://raw.githubusercontent.com/lozaexequiel/provisioner/main/${TOOL}/example/.env.example}"
 log_file="/var/log/provision.log"
 
-# Logging function
 log() {
     echo "$(date) $1: $2" | tee -a "$log_file"
 }
 
-# Error handling
 handle_error() {
     log "ERROR" "An error occurred. Exiting."
     exit 1
 }
 trap handle_error ERR
 
-    # Check if .env directory exists
     if [ ! -d "${env_dir}" ]; then
         echo "$(date) INFO: The .env directory does not exist or is not detected"
         echo "$(date) INFO: Creating .env directory in ${env_dir}"
         mkdir -p "${env_dir}"
     fi
 
-    # Check if .env file exists and is not empty
     if [ -f "${env_file}" ] && [ -s "${env_file}" ]; then
         echo "Sourcing environment variables from file"
         source "${env_file}"
-        # Validate required variables
         if [ -z "${PACKAGES}" ] || [ -z "${SSH_DIR}" ] || [ -z "${PRIVATE_KEY_FILE}" ]; then
             echo "$(date) ERROR: Required environment variables are missing"
             exit 1
@@ -55,7 +49,6 @@ trap handle_error ERR
     else
         echo "$(date) INFO: The .env file does not exist, is not detected, or the file is empty"
 
-        # Check if example file exists
         if [ -f "${example_file}" ]; then
             echo "$(date) INFO: Example file detected, creating .env file from example"
             cp "${example_file}" "${env_file}"
@@ -78,7 +71,6 @@ trap handle_error ERR
         fi
     fi
 
-    # Disable automatic export of variables
     set +a
 }
 
@@ -92,7 +84,6 @@ disable_swap ()
   fi
 }
 
-# Function to install dependencies
 install_dependencies ()
 {
   apt-get update
@@ -131,7 +122,6 @@ clean_up ()
   fi
 }
 
-# Create a new SSH key in the local path
 create_ssh_key ()
 {
   mkdir -p ${SSH_DIR}
