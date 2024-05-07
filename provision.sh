@@ -117,6 +117,8 @@ clean_up ()
   if [ $? -ne 0 ]; then
     echo "$(date) WARNING: Failed to remove functions.sh please remove it manually" 
   fi
+
+  rm -rf /vagrant_data/provision.sh || echo "$(date) WARNING: Failed to remove provision.sh please remove it manually"
 }
 
 create_ssh_key ()
