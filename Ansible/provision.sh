@@ -16,6 +16,7 @@ ansible_config
 ansible_inventory
 ansible_create_vars
 ansible_collection_install
+ubuntu_pro_login
 clean_up
 }
 
