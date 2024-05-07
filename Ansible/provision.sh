@@ -46,11 +46,11 @@ ansible_config ()
     *ansible*)
       if [ ! -d ${ANSIBLE_DIR} ]; then
         echo "$(date) INFO: Creating Ansible directory"
-        mkdir -p ${ANSIBLE_DIR} || { echo "$(date) ERROR: Failed to create ${ANSIBLE_DIR}"; exit 1; }
+        mkdir -p ${ANSIBLE_DIR} || { echo "$(date) WARNING: Failed to create ${ANSIBLE_DIR}"; }
       fi
 
       if [ -f ${ANSIBLE_CONFIG} ]; then
-        cp ${ANSIBLE_CONFIG} ${ANSIBLE_DIR}/ansible.cfg || { echo "$(date) ERROR: Failed to copy ${ANSIBLE_CONFIG}"; exit 1; }
+        cp ${ANSIBLE_CONFIG} ${ANSIBLE_DIR}/ansible.cfg || { echo "$(date) WARNING: Failed to copy ${ANSIBLE_CONFIG}"; }
         echo "$(date) INFO: The ansible.cfg file already exists, you can find the file in ${ANSIBLE_PATH}"
       else
         echo "$(date) INFO: The ansible.cfg file does not exist, creating a new one"
