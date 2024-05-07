@@ -105,20 +105,17 @@ clean_up ()
 {
   apt-get autoremove --yes
   if [ $? -ne 0 ]; then
-    echo "$(date) ERROR: Failed to remove unnecessary packages"
-    exit 1
+    echo "$(date) WARNING: Failed to remove unnecessary packages"    
   fi
 
   apt-get clean
   if [ $? -ne 0 ]; then
-    echo "$(date) ERROR: Failed to clean up package lists"
-    exit 1
+    echo "$(date) WARNING: Failed to clean up package lists"
   fi
 
   rm -rf /vagrant_data/functions.sh
   if [ $? -ne 0 ]; then
-    echo "$(date) ERROR: Failed to remove functions.sh"
-    exit 1
+    echo "$(date) WARNING: Failed to remove functions.sh please remove it manually" 
   fi
 }
 
@@ -133,9 +130,9 @@ create_ssh_key ()
     exit 1
   fi
 
-  chown -R ${USER}:${USER} ${SSH_DIR}
-  eval "$(ssh-agent -s)"
-  ssh-add ${PRIVATE_KEY_FILE}
+  chown -R ${USER}:${USER} ${SSH_DIR} || echo "$(date) WARNING: Failed to change owner of ${SSH_DIR}"
+  eval "$(ssh-agent -s)" || echo "$(date) WARNING: Failed to start ssh-agent"
+  ssh-add ${PRIVATE_KEY_FILE} || echo "$(date) WARNING: Failed to add SSH key to ssh-agent"
 }
 
 permission_ssh_key ()
@@ -157,4 +154,10 @@ permission_ssh_key ()
     echo "$(date) ERROR: Failed to change owner of ${SSH_DIR}"
     exit 1
   fi
+}
+
+ubuntu_pro_login ()
+{  
+  echo "Login the server into the ubuntu_pro account"
+  pro attach ${UBUNTU_TOKEN} || echo "$(date) WARNING: Failed to login the server into the ubuntu_pro account"
 }
