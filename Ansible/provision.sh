@@ -62,6 +62,7 @@ ansible_config ()
           echo "remote_tmp = ${REMOTE_TMP}"
           echo "become_user = ${BECOME_USER}"
           echo "roles_path = ${ROLES_PATH}"
+          echo "password_file = ${PASSWORD_FILE}"
         } > ${ANSIBLE_DIR}/ansible.cfg || { echo "$(date) WARNING: Failed to create ${ANSIBLE_DIR}/ansible.cfg"; }
         cp ${ANSIBLE_DIR}/ansible.cfg ${ANSIBLE_PATH} || { echo "$(date) WARNING: Failed to copy ${ANSIBLE_DIR}/ansible.cfg"; }
         echo "$(date) INFO: ansible.cfg file created, you can find the file in ${ANSIBLE_PATH}"
