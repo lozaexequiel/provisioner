@@ -159,7 +159,16 @@ permission_ssh_key ()
 }
 
 ubuntu_pro_login ()
-{  
-  echo "Login the server into the ubuntu_pro account"
+{
+  if [ -z "${UBUNTU_TOKEN}" ]; then
+    echo "$(date) ERROR: UBUNTU_TOKEN is not set"
+    return 1
+  fi
+
+  if ! command -v ubuntu-pro-client &> /dev/null; then
+    echo "$(date) INFO: ubuntu-pro-client is not installed, installing now"
+    apt-get install -y ubuntu-pro-client || { echo "$(date) ERROR: Failed to install ubuntu-pro-client"; return 1; }
+  fi
+
   pro attach ${UBUNTU_TOKEN} || echo "$(date) WARNING: Failed to login the server into the ubuntu_pro account"
 }
