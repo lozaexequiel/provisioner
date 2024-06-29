@@ -1,7 +1,0 @@
-[DEFAULT]
-enabled  = false
-filter   = %(__name__)s
-action   = iptables[name=%(__name__)s, port=%(port)s, protocol=%(protocol)s]
-sendmail-whois[name=%(__name__)s, dest=infra@splight-ae.com, sender=infra@splight-ae.com]
-logpath  = /var/log/%(__name__)s.log
-maxretry = 3
